@@ -1,25 +1,11 @@
 package controllers;
 
-import exceptions.FileNotExistException;
-import exceptions.FileIsEmpatyException;
-import exceptions.ContentListIsEmpatyException;
-import exceptions.DirectoryListIsEmpatyException;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.io.Writer;
 import java.util.LinkedList;
-import java.util.List;
 import util.Settings.FilePath;
 import util.Settings.FileSettings;
 import weka.core.Instances;
@@ -60,6 +46,7 @@ public class FileController {
         saver.setFile(new File(filePath.getValue()));
         saver.writeBatch();
     }
+    
     public LinkedList<String[]> readCSV(FilePath filePath) throws FileNotFoundException, IOException {
        
         BufferedReader br = new BufferedReader(new FileReader(filePath.getValue()));
