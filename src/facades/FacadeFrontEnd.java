@@ -1,10 +1,10 @@
 package facades;
 
 import controllers.ControllerScreens;
-import controllers.ControllerScreens.Scenes;
 import controllers.ControllerStage;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import util.Settings.Scenes;
 
 /**
  *
@@ -26,10 +26,10 @@ public class FacadeFrontEnd {
         return (facade == null) ? facade = new FacadeFrontEnd() : facade;
     }
 
-    public void initialize(Stage palcoPrincipal, Scenes homeScreen) throws Exception {
+    public void initialize(Stage mainStage, Scenes homeScreen) throws Exception {
         if (controllerStage == null) {
             Parent initialContent = controllerScreens.loadScreen(homeScreen);
-            controllerStage = new ControllerStage(palcoPrincipal);
+            controllerStage = new ControllerStage(mainStage);
             controllerStage.changeStageContent(initialContent);
         }
     }
@@ -48,6 +48,6 @@ public class FacadeFrontEnd {
     }
     
     public void newAlert(String titulo, String mensagem){
-        controllerStage.newAlert(titulo, mensagem);
+        controllerStage.newAlertError(titulo, mensagem);
     }
 }

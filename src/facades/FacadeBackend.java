@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.List;
 import util.Settings.Files;
 import util.Settings.Path;
+import weka.core.Instances;
 
 /**
  *
@@ -22,10 +23,6 @@ public class FacadeBackend {
         this.dataProcessingController = new DataProcessingController();
     }
 
-    public void initializeWithWeka() throws IOException {
-        fileController.convertCSVToArff(Path.HEROES_CSV_PRE_PROCESSED, Path.HEROES_FILE_ARFF);
-    }
-
     public void initialize() throws IOException, ListIsEmpty {
         List<String[]> contentHeroFile = fileController.readCSV(Path.HEROES_CSV_ORIGINAL);
         List<String[]> contentSuperPowerFile = fileController.readCSV(Path.SUPER_POWER_CSV_ORIGINAL);
@@ -36,7 +33,7 @@ public class FacadeBackend {
         fileController.witerCSV(Path.HEROES_CSV_PRE_PROCESSED, contentHeroFile);
         fileController.witerCSV(Path.SUPER_POWER_CSV_PRE_PROCESSED, contentSuperPowerFile);
         
-        fileController.convertCSVToArff(Path.SUPER_POWER_CSV_PRE_PROCESSED, Path.SUPER_POWER_FILE_ARFF);
-        fileController.convertCSVToArff(Path.HEROES_CSV_PRE_PROCESSED, Path.HEROES_FILE_ARFF);
+        Instances heroesFileArff = fileController.convertCSVToArff(Path.HEROES_CSV_PRE_PROCESSED, Path.HEROES_FILE_ARFF);
+        Instances superPowerFileArff = fileController.convertCSVToArff(Path.SUPER_POWER_CSV_PRE_PROCESSED, Path.SUPER_POWER_FILE_ARFF);
     }
 }

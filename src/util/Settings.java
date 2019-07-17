@@ -8,6 +8,7 @@ package util;
 public class Settings {
     
     public enum StandardValues{
+        
         MINIMUM_ALLOWED_VALUE(0),
         NUMBER_ATTRIBUTE_HERO(11),
         NUMBER_ATTRIBUTE_SUPER_POWER(168);
@@ -48,6 +49,7 @@ public class Settings {
     
     public enum Path{
         
+        DATASET_FILE_ARFF("res\\dataset\\processed\\dataset.arff"),
         HEROES_FILE_ARFF("res\\dataset\\pre-processed\\heroes.arff"),
         HEROES_CSV_ORIGINAL("res\\dataset\\original\\herois.csv"),
         HEROES_CSV_PRE_PROCESSED("res\\dataset\\pre-processed\\heroes.csv"),
@@ -67,16 +69,22 @@ public class Settings {
     }
     
     public enum Scenes{
-        HOME("view\\...");
+        HOME("view\\..", true);
         
         private final String value;
+        private final boolean cache;
         
-        Scenes(String value){
+        Scenes(String value, boolean inCache){
             this.value = value;
+            this.cache = inCache;
         }
         
         public String getValue(){
             return this.value;
+        }
+        
+        public boolean isCache(){
+            return this.cache;
         }
     }
 }

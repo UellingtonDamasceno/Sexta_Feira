@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import util.Settings;
+import util.Settings.Scenes;
+
 
 /**
  *
@@ -12,7 +15,6 @@ import javafx.scene.Parent;
 public class ControllerScreens {
 
     private final HashMap<Scenes, Parent> allScreens = new HashMap();
-    private final String URL = "/views/";
     private Scenes lastScreenLoaded;
 
     public ControllerScreens() {
@@ -23,18 +25,19 @@ public class ControllerScreens {
         return lastScreenLoaded == scene;
     }
 
-    public Parent loadScreen(Scenes scene) throws Exception {
-        return loadFXML(scene);
+    public Parent loadScreen(Settings.Scenes scene) throws Exception {
+        return (scene.isCache()) ? loadScreenInCache(scene) : loadFXML(scene);
     }
 
-//    public Parent loadScreen(Scenes scene) throws Exception {
-//        if (!(lastScreenLoaded == scene) && !allScreens.containsKey(scene)) {          
-//            Parent screenLoaded = loadFXML(scene);
-//            addNewScreen(scene, screenLoaded);
-//        }
-//        lastScreenLoaded = scene;
-//        return getScreen(scene);
-//    }
+    private Parent loadScreenInCache(Settings.Scenes scene) throws Exception {
+        if (!(lastScreenLoaded == scene) && !allScreens.containsKey(scene)) {
+            Parent screenLoaded = loadFXML(scene);
+            addNewScreen(scene, screenLoaded);
+        }
+        lastScreenLoaded = scene;
+        return getScreen(scene);
+    }
+
     private void addNewScreen(Scenes scene, Parent content) throws Exception {
         if (scene != null && content != null) {
             allScreens.put(scene, content);
@@ -56,7 +59,7 @@ public class ControllerScreens {
     }
 
     public FXMLLoader getLoaderFXML(Scenes scene) {
-        return new FXMLLoader(getClass().getResource(URL + scene.getValueScene()));
+        return new FXMLLoader(getClass().getResource(scene.getValue()));
     }
 
     public Object getSceneController(Scenes scene) {
@@ -67,25 +70,4 @@ public class ControllerScreens {
         return getLoaderFXML(scene).load();
     }
 
-    public enum Scenes {
-        DASHBOARD("Dashboard.fxml"),
-        LOGIN("Login.fxml"),
-        REGISTER("Register.fxml"),
-        REGISTER_COURSES(""),
-        REGISTER_INSTITUITION(""),
-        REGISTER_STUDENT("CadastroForm.fxml"),
-        REGISTER_SCHEDULES("TelaCadastroHorario.fxml"),
-        SHEARCH("TelaResultadoPesquisa.fxml");
-
-        private final String value;
-
-        private Scenes(String value) {
-            this.value = value;
-        }
-
-        public String getValueScene() {
-            return this.value;
-        }
-
-    }
 }

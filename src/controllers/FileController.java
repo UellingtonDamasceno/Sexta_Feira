@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import util.Settings.Path;
@@ -27,28 +26,25 @@ import weka.core.converters.Saver;
 public class FileController {
 
     public Instances readFileCSVWithWeka(Path filePath) throws IOException {
-        CSVLoader loader = new CSVLoader();
-        return this.loadData(loader, filePath);
+        return this.loadData(new CSVLoader(), filePath);
     }
 
     public Instances readFileArff(Path filePath) throws IOException {
-        ArffLoader loader = new ArffLoader();
-        return this.loadData(loader, filePath);
+        return this.loadData(new ArffLoader(), filePath);
     }
 
     public void saveDataInArffFormact(Instances data, Path filePath) throws IOException {
-        ArffSaver saver = new ArffSaver();
-        saveData(saver, data, filePath);
+        saveData(new ArffSaver(), data, filePath);
     }
 
     public void saveDataInCSVFormact(Instances data, Path filePath) throws IOException {
-        CSVSaver saver = new CSVSaver();
-        saveData(saver, data, filePath);
+        saveData(new CSVSaver(), data, filePath);
     }
 
-    public void convertCSVToArff(Path pathOriginal, Path pathDestiny) throws IOException {
+    public Instances convertCSVToArff(Path pathOriginal, Path pathDestiny) throws IOException {
         Instances instances = this.readFileCSVWithWeka(pathOriginal);
         this.saveDataInArffFormact(instances, pathDestiny);
+        return instances;
     }
 
     public List<String[]> readCSV(Path filePath) throws FileNotFoundException, IOException {
@@ -59,7 +55,6 @@ public class FileController {
             while ((line = br.readLine()) != null) {
                 lines.add(line.split(FileSettings.CSV_DIVISOR.getValue()));
             }
-            System.out.println(lines.get(0).length);
         }
         return lines;
     }
