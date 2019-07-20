@@ -9,9 +9,9 @@ import java.util.List;
 public class Hero {
     private final int id;
     private String name;
-    private List<Attribute> attributes;
+    private List<Attributeee> attributes;
     
-    public Hero(int id, String name, List<Attribute> attributes){
+    public Hero(int id, String name, List<Attributeee> attributes){
         this.id = id;
         this.name = name;
         this.attributes = attributes;
@@ -29,11 +29,11 @@ public class Hero {
         this.name = name;
     }
 
-    public List<Attribute> getAttributes() {
+    public List<Attributeee> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<Attribute> attributes) {
+    public void setAttributes(List<Attributeee> attributes) {
         this.attributes = attributes;
     }
     

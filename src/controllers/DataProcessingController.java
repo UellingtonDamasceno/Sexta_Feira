@@ -2,9 +2,12 @@ package controllers;
 
 import java.util.LinkedList;
 import java.util.List;
+import util.Settings.Algorithms;
 import util.Settings.FileSettings;
-import util.Settings.Files;
+import util.Settings.DatasetId;
 import util.Settings.StandardValues;
+import weka.core.Instance;
+import weka.core.Instances;
 
 /**
  *
@@ -12,21 +15,47 @@ import util.Settings.StandardValues;
  */
 public class DataProcessingController {
 
-    public List<String[]> standardizeValues(List<String[]> contentFile, Files fileType) {
-        int standardNumber;
-        LinkedList<String[]> linesToRemove = new LinkedList();
+    public List<String[]> standardizeValues(List<String> contentFile, DatasetId fileType) {
+        List<String[]> contentFilePreProcessed = replaceEmpatyValues(contentFile);
 
-        if (fileType == Files.HEROES) {
-            standardNumber = StandardValues.NUMBER_ATTRIBUTE_HERO.getValue();
-            if (contentFile.get(0)[0].isEmpty()) {
-                contentFile.get(0)[0] = "index";
-            }
-        } else {
-            standardNumber = StandardValues.NUMBER_ATTRIBUTE_SUPER_POWER.getValue();
-        }
+        contentFilePreProcessed = (fileType == DatasetId.HEROES)
+                ? standardizeValuesHeroFile(contentFilePreProcessed)
+                : replaceBinariesValues(contentFilePreProcessed);
+
+        StandardValues standardNumber = (fileType == DatasetId.HEROES)
+                ? StandardValues.NUMBER_ATTRIBUTE_HERO
+                : StandardValues.NUMBER_ATTRIBUTE_SUPER_POWER;
+
+        return standardization(contentFilePreProcessed, standardNumber);
+    }
+
+    private List<String[]> replaceBinariesValues(List<String[]> contentFile) {
 
         contentFile.forEach((String[] line) -> {
-            if (line.length < standardNumber) {
+            for (int i = 0; i < line.length; i++) {
+                line[i] = (line[i].equalsIgnoreCase("true"))
+                        ? FileSettings.TRUE.getValue()
+                        : (line[i].equalsIgnoreCase("false"))
+                        ? FileSettings.FALSE.getValue()
+                        : line[i];
+            }
+        });
+        return contentFile;
+    }
+
+    private List<String[]> replaceEmpatyValues(List<String> content) {
+        List<String[]> preProcessedContent = new LinkedList();
+        content.stream().map((string) -> string.replace(FileSettings.EMPATY.getValue(), ",-,")).forEachOrdered((string) -> {
+            System.out.println(string);
+            preProcessedContent.add(string.split(FileSettings.CSV_DIVISOR.getValue()));
+        });
+        return preProcessedContent;
+    }
+
+    private List<String[]> standardization(List<String[]> contentFile, StandardValues value) {
+        LinkedList<String[]> linesToRemove = new LinkedList();
+        contentFile.forEach((String[] line) -> {
+            if (line.length < value.getValue()) {
                 linesToRemove.add(line);
             } else {
                 for (int i = 0; i < line.length; i++) {
@@ -42,6 +71,36 @@ public class DataProcessingController {
         });
         linesToRemove.forEach(contentFile::remove);
         return contentFile;
+    }
+
+    private List<String[]> standardizeValuesHeroFile(List<String[]> contentFile) {
+        if (contentFile.get(0)[0].trim().isEmpty()) {
+            contentFile.get(0)[0] = "index";
+        }
+        return contentFile;
+    }
+
+    public List calculateDistances(Instances dataset, Instance referenceHero, Algorithms algorithm) {
+        dataset.remove(referenceHero);
+        double score = 0;
+
+        switch (algorithm) {
+            case JACCARD_COEFFICIENT: {
+                break;
+            }
+            case SMC: {
+                break;
+            }
+            case C: {
+                break;
+            }
+        }
+
+        System.out.println(dataset.toString());
+        System.out.println(dataset.toSummaryString());
+        System.out.println(referenceHero.attribute(1));
+        System.out.println(referenceHero.enumerateAttributes().toString());
+        return null;
     }
 
 }

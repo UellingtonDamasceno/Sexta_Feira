@@ -4,12 +4,12 @@ package model.bean;
  *
  * @author Uellington Damasceno
  */
-public class Attribute {
+public class Attributeee {
     private final int id;
     private String attributeLabel;
     private String value;
 
-    public Attribute(int id, String attributeLabel, String value) {
+    public Attributeee(int id, String attributeLabel, String value) {
         this.id = id;
         this.attributeLabel = attributeLabel;
         this.value = value;
@@ -44,8 +44,8 @@ public class Attribute {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof Attribute){
-            Attribute other = (Attribute) obj;
+        if(obj instanceof Attributeee){
+            Attributeee other = (Attributeee) obj;
             return (this.hashCode() == other.hashCode());
         }
         return false;

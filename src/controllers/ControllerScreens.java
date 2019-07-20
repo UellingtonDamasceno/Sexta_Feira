@@ -26,7 +26,7 @@ public class ControllerScreens {
     }
 
     public Parent loadScreen(Settings.Scenes scene) throws Exception {
-        return (scene.isCache()) ? loadScreenInCache(scene) : loadFXML(scene);
+        return (scene.isCacheable()) ? loadScreenInCache(scene) : loadFXML(scene);
     }
 
     private Parent loadScreenInCache(Settings.Scenes scene) throws Exception {

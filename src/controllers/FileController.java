@@ -47,13 +47,13 @@ public class FileController {
         return instances;
     }
 
-    public List<String[]> readCSV(Path filePath) throws FileNotFoundException, IOException {
-        List<String[]> lines;
+    public List<String> readCSV(Path filePath) throws FileNotFoundException, IOException {
+        List<String> lines;
         try (BufferedReader br = new BufferedReader(new FileReader(filePath.getValue()))) {
             lines = new LinkedList<>();
             String line;
             while ((line = br.readLine()) != null) {
-                lines.add(line.split(FileSettings.CSV_DIVISOR.getValue()));
+                lines.add(line);
             }
         }
         return lines;

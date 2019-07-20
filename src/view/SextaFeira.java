@@ -16,8 +16,8 @@ public class SextaFeira extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        FacadeBackend facadeBackend = new FacadeBackend();
-        try {
+        FacadeBackend facadeBackend = new FacadeBackend();     
+        try {   
             facadeBackend.initialize();
         } catch (IOException | ListIsEmpty ex) {
             Logger.getLogger(SextaFeira.class.getName()).log(Level.SEVERE, null, ex);
