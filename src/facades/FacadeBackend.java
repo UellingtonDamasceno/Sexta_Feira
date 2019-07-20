@@ -1,7 +1,9 @@
 package facades;
 
 import controllers.DataProcessingController;
+import controllers.DatasetController;
 import controllers.FileController;
+import controllers.PredictionController;
 import exceptions.ListIsEmpty;
 import java.io.IOException;
 import java.util.List;
@@ -16,12 +18,16 @@ import weka.core.Instances;
  */
 public class FacadeBackend {
 
-    private final FileController fileController;
     private final DataProcessingController dataProcessingController;
-
+    private final DatasetController datasetController;
+    private final FileController fileController;
+    private final PredictionController predictionController;
+    
     public FacadeBackend() {
-        this.fileController = new FileController();
         this.dataProcessingController = new DataProcessingController();
+        this.datasetController = new DatasetController();
+        this.fileController = new FileController();
+        this.predictionController = new PredictionController();
     }
 
     public void initialize() throws IOException, ListIsEmpty {
@@ -38,8 +44,8 @@ public class FacadeBackend {
         Instances superPowerFileArff = fileController.convertCSVToArff(Path.SUPER_POWER_CSV_PRE_PROCESSED, Path.SUPER_POWER_FILE_ARFF);
         
     }
-    public void calculateDistances(Algorithms algorithm) throws IOException{
-        Instances superPowerFileArff = fileController.readFileArff(Path.SUPER_POWER_FILE_ARFF);
-        dataProcessingController.calculateDistances(superPowerFileArff, superPowerFileArff.get(1), algorithm);
+    public void calculateDistances(DatasetId datasetId, Algorithms algorithm) throws IOException{
+        datasetController.addDataset(DatasetId.SUPER_POWER, fileController.readFileArff(Path.SUPER_POWER_FILE_ARFF));
+        Instances superPowerDataset = datasetController.getDataset(DatasetId.SUPER_POWER);
     }
 }

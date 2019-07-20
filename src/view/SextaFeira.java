@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import util.Settings;
 
 /**
  *
@@ -18,8 +19,8 @@ public class SextaFeira extends Application {
     public void start(Stage primaryStage) {
         FacadeBackend facadeBackend = new FacadeBackend();     
         try {   
-            facadeBackend.initialize();
-        } catch (IOException | ListIsEmpty ex) {
+            facadeBackend.calculateDistances(Settings.DatasetId.HEROES, Settings.Algorithms.SMC);
+        } catch (IOException ex) {
             Logger.getLogger(SextaFeira.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.exit(0);

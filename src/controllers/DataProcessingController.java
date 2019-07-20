@@ -2,12 +2,9 @@ package controllers;
 
 import java.util.LinkedList;
 import java.util.List;
-import util.Settings.Algorithms;
 import util.Settings.FileSettings;
 import util.Settings.DatasetId;
 import util.Settings.StandardValues;
-import weka.core.Instance;
-import weka.core.Instances;
 
 /**
  *
@@ -78,29 +75,6 @@ public class DataProcessingController {
             contentFile.get(0)[0] = "index";
         }
         return contentFile;
-    }
-
-    public List calculateDistances(Instances dataset, Instance referenceHero, Algorithms algorithm) {
-        dataset.remove(referenceHero);
-        double score = 0;
-
-        switch (algorithm) {
-            case JACCARD_COEFFICIENT: {
-                break;
-            }
-            case SMC: {
-                break;
-            }
-            case C: {
-                break;
-            }
-        }
-
-        System.out.println(dataset.toString());
-        System.out.println(dataset.toSummaryString());
-        System.out.println(referenceHero.attribute(1));
-        System.out.println(referenceHero.enumerateAttributes().toString());
-        return null;
     }
 
 }

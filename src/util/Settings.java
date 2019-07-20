@@ -9,7 +9,7 @@ public class Settings {
     public enum Algorithms {
         JACCARD_COEFFICIENT,
         SMC,
-        C;
+        DICE;
     }
 
     public enum StandardValues {
