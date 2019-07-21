@@ -6,9 +6,16 @@ import util.Algorithm;
  *
  * @author Uellington Damasceno
  */
-public class SMC implements Algorithm{
+public class SMC implements Algorithm {
+
     private String description;
-    
+
+    public SMC() {
+        this.description = "The Simple Matching Coefficient similarity measure "
+                + "is a way to calculate the similarity between two objects that "
+                + "have binary attributes. This algorithm includes negative matches.";
+    }
+
     @Override
     public String getDescription() {
         return this.description;
@@ -16,7 +23,7 @@ public class SMC implements Algorithm{
 
     @Override
     public double calculate(int a, int b, int c, int d) {
-        return ((a+d)/(a+b+c+d));
+        return ((a + d) / (a + b + c + d));
     }
-    
+
 }
