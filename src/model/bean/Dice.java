@@ -8,7 +8,7 @@ import util.Algorithm;
  */
 public class Dice implements Algorithm {
 
-    private String description;
+    private final String description;
 
     public Dice() {
         this.description = "The Dice similarity measure is a way to calculate "

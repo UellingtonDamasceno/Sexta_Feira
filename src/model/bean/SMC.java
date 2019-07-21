@@ -8,7 +8,7 @@ import util.Algorithm;
  */
 public class SMC implements Algorithm {
 
-    private String description;
+    private final String description;
 
     public SMC() {
         this.description = "The Simple Matching Coefficient similarity measure "
