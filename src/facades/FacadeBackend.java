@@ -10,6 +10,7 @@ import java.util.List;
 import util.Settings.Algorithms;
 import util.Settings.DatasetId;
 import util.Settings.Path;
+import weka.core.Instance;
 import weka.core.Instances;
 
 /**
@@ -43,9 +44,13 @@ public class FacadeBackend {
         Instances heroesFileArff = fileController.convertCSVToArff(Path.HEROES_CSV_PRE_PROCESSED, Path.HEROES_FILE_ARFF);
         Instances superPowerFileArff = fileController.convertCSVToArff(Path.SUPER_POWER_CSV_PRE_PROCESSED, Path.SUPER_POWER_FILE_ARFF);
         
+        datasetController.addDataset(DatasetId.HEROES, heroesFileArff);
+        datasetController.addDataset(DatasetId.SUPER_POWER, superPowerFileArff);
+        
     }
-    public void calculateDistances(DatasetId datasetId, Algorithms algorithm) throws IOException{
+    public void calculateDistances(DatasetId datasetId, Instance referenceHero, Algorithms algorithm) throws IOException{
         datasetController.addDataset(DatasetId.SUPER_POWER, fileController.readFileArff(Path.SUPER_POWER_FILE_ARFF));
         Instances superPowerDataset = datasetController.getDataset(DatasetId.SUPER_POWER);
+        predictionController.calculateDistances(superPowerDataset, referenceHero, algorithm);
     }
 }
