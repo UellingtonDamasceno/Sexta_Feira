@@ -1,5 +1,7 @@
 package model.bean;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import util.Algorithm;
 
 /**
@@ -24,7 +26,10 @@ public class Dice implements Algorithm {
 
     @Override
     public double calculate(int a, int b, int c, int d) {
-        return (1 - ((2 * a) / ((2 * a) + b + c)));
+        BigDecimal dividend = new BigDecimal(2*a);
+        BigDecimal one = new BigDecimal(1);
+        BigDecimal divisor = new BigDecimal((2*a) + b + c);
+        return one.subtract(dividend.divide(divisor, MathContext.DECIMAL64)).doubleValue();
     }
 
 }

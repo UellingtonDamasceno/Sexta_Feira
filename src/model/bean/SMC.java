@@ -1,5 +1,7 @@
 package model.bean;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import util.Algorithm;
 
 /**
@@ -23,7 +25,10 @@ public class SMC implements Algorithm {
 
     @Override
     public double calculate(int a, int b, int c, int d) {
-        return ((a + d) / (a + b + c + d));
+        BigDecimal dividend = new BigDecimal(a + d);
+        BigDecimal divisor = new BigDecimal(a + b + c + d);
+        BigDecimal one = new BigDecimal(1);
+        return one.subtract(dividend.divide(divisor, MathContext.DECIMAL64)).doubleValue();
     }
 
 }

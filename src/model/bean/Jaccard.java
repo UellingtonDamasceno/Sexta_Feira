@@ -1,5 +1,7 @@
 package model.bean;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import util.Algorithm;
 
 /**
@@ -24,7 +26,10 @@ public class Jaccard implements Algorithm {
 
     @Override
     public double calculate(int a, int b, int c, int d) {
-        return (1 - (a / (a + b + c)));
+        BigDecimal dividend = new BigDecimal(a);
+        BigDecimal one = new BigDecimal(1);
+        BigDecimal divisor = new BigDecimal(a+b+c);
+        return one.subtract(dividend.divide(divisor, MathContext.DECIMAL64)).doubleValue();
     }
 
 }

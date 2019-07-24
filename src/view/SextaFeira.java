@@ -1,17 +1,27 @@
 package view;
 
+import facades.FacadeBackend;
+import facades.FacadeFrontEnd;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import util.Settings.Scenes;
 
 /**
  *
  * @author Uellington Damasceno
  */
 public class SextaFeira extends Application {
-    
+
     @Override
     public void start(Stage primaryStage) {
-        
+        try {
+            FacadeFrontEnd.getInstance().initialize(primaryStage, Scenes.DASHBOARD);
+        } catch (Exception ex) {
+            Logger.getLogger(SextaFeira.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(0);
+        }
     }
 
     /**
@@ -20,5 +30,5 @@ public class SextaFeira extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

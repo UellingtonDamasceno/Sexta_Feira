@@ -12,6 +12,26 @@ public class Settings {
         DICE;
     }
 
+    public enum Icons{
+        
+        IRON_MAN("ironman.png"),
+        LIGHTNING_BOLT("lightning_bolt.png"),
+        MODULE("module.png"),
+        SUPER_HERO_MALE("super_hero_male.png"),
+        SUPER_HERO_FEMALE("super_hero_female.png");
+        
+        private final String value;
+        private final String PATH = "res\\images\\icons8_";
+        
+        Icons(String value){
+            this.value = value;
+        }
+        
+        public String getValue(){
+            return this.PATH.concat(value);
+        }
+    }
+    
     public enum StandardValues {
 
         MINIMUM_ALLOWED_VALUE(0),
@@ -51,32 +71,36 @@ public class Settings {
 
     public enum DatasetId {
         HEROES,
-        SUPER_POWER;
+        SUPER_POWER,
+        SUPER_POWER_MERGE_HERO;
     }
 
     public enum Path {
 
-        DATASET_FILE_ARFF("res\\dataset\\processed\\dataset.arff"),
-        HEROES_FILE_ARFF("res\\dataset\\pre-processed\\heroes.arff"),
-        HEROES_CSV_ORIGINAL("res\\dataset\\original\\herois.csv"),
-        HEROES_CSV_PRE_PROCESSED("res\\dataset\\pre-processed\\heroes.csv"),
-        SUPER_POWER_FILE_ARFF("res\\dataset\\pre-processed\\superpowers.arff"),
-        SUPER_POWER_CSV_ORIGINAL("res\\dataset\\original\\superpoderes.csv"),
-        SUPER_POWER_CSV_PRE_PROCESSED("res\\dataset\\pre-processed\\superpoderes.csv");
-
+        DATASET_FILE_ARFF("processed\\dataset.arff"),
+        HEROES_FILE_ARFF("pre-processed\\heroes.arff"),
+        HEROES_CSV_ORIGINAL("original\\herois.csv"),
+        HEROES_CSV_PRE_PROCESSED("pre-processed\\heroes.csv"),
+        SUPER_POWER_FILE_ARFF("pre-processed\\superpowers.arff"),
+        SUPER_POWER_CSV_ORIGINAL("original\\superpoderes.csv"),
+        SUPER_POWER_CSV_PRE_PROCESSED("pre-processed\\superpoderes.csv");
+        
         private final String value;
-
+        private final String path;
+        
         Path(String value) {
             this.value = value;
+            this.path = "res\\dataset\\";
         }
 
         public String getValue() {
-            return this.value;
+            return path.concat(value);
         }
     }
 
     public enum Scenes {
-        HOME("view\\..", true);
+      
+        DASHBOARD("/view/Dashboard.fxml", true);
 
         private final String value;
         private final boolean cacheable;

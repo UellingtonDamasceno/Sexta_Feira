@@ -3,10 +3,11 @@ package facades;
 import controllers.DataProcessingController;
 import controllers.DatasetController;
 import controllers.FileController;
-import controllers.PredictionController;
+import controllers.SimilarityController;
 import exceptions.ListIsEmpty;
 import java.io.IOException;
 import java.util.List;
+import model.bean.Edge;
 import util.Settings.Algorithms;
 import util.Settings.DatasetId;
 import util.Settings.Path;
@@ -22,15 +23,20 @@ public class FacadeBackend {
     private final DataProcessingController dataProcessingController;
     private final DatasetController datasetController;
     private final FileController fileController;
-    private final PredictionController predictionController;
+    private final SimilarityController simmilarityController;
+    private static FacadeBackend facade;
     
-    public FacadeBackend() {
+    private FacadeBackend() {
         this.dataProcessingController = new DataProcessingController();
         this.datasetController = new DatasetController();
         this.fileController = new FileController();
-        this.predictionController = new PredictionController();
+        this.simmilarityController = new SimilarityController();
     }
-
+    
+     static public synchronized FacadeBackend getInstance(){
+        return (facade == null) ? facade = new FacadeBackend() : facade;
+    }
+    
     public void initialize() throws IOException, ListIsEmpty {
         List<String> contentHeroFile = fileController.readCSV(Path.HEROES_CSV_ORIGINAL);
         List<String> contentSuperPowerFile = fileController.readCSV(Path.SUPER_POWER_CSV_ORIGINAL);
@@ -48,9 +54,12 @@ public class FacadeBackend {
         datasetController.addDataset(DatasetId.SUPER_POWER, superPowerFileArff);
         
     }
-    public void calculateDistances(DatasetId datasetId, Instance referenceHero, Algorithms algorithm) throws IOException{
-        datasetController.addDataset(DatasetId.SUPER_POWER, fileController.readFileArff(Path.SUPER_POWER_FILE_ARFF));
+    public List<Edge> calculateDistances(Instance referenceHero, Algorithms algorithm) throws IOException{
         Instances superPowerDataset = datasetController.getDataset(DatasetId.SUPER_POWER);
-        predictionController.calculateDistances(superPowerDataset, referenceHero, algorithm);
+        return simmilarityController.calculateDistances(superPowerDataset, referenceHero, algorithm);
+    }
+    
+    public Instances getDataset(){
+        return datasetController.getDataset(DatasetId.SUPER_POWER);
     }
 }

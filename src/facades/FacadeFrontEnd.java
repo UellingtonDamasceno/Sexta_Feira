@@ -2,6 +2,7 @@ package facades;
 
 import controllers.ControllerScreens;
 import controllers.ControllerStage;
+import controllers.DashboardController;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import util.Settings.Scenes;
@@ -16,6 +17,7 @@ public class FacadeFrontEnd {
 
     private ControllerStage controllerStage;
     private final ControllerScreens controllerScreens;
+    private DashboardController dashboardController;
    
     
     private FacadeFrontEnd() {
@@ -28,6 +30,7 @@ public class FacadeFrontEnd {
 
     public void initialize(Stage mainStage, Scenes homeScreen) throws Exception {
         if (controllerStage == null) {
+            this.dashboardController = (DashboardController) controllerScreens.getSceneController(Scenes.DASHBOARD);            
             Parent initialContent = controllerScreens.loadScreen(homeScreen);
             controllerStage = new ControllerStage(mainStage);
             controllerStage.changeStageContent(initialContent);

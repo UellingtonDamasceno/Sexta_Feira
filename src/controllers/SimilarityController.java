@@ -1,6 +1,9 @@
 package controllers;
 
+import java.util.LinkedList;
+import java.util.List;
 import model.bean.Dice;
+import model.bean.Edge;
 import model.bean.Jaccard;
 import model.bean.OccurrenceTable;
 import model.bean.SMC;
@@ -13,24 +16,26 @@ import weka.core.Instances;
  *
  * @author Uellington Damasceno
  */
-public class PredictionController {
+public class SimilarityController {
 
-    private OccurrenceTable occurrenceTableGerator(Instances dataset, Instance referenceHero, Algorithm algorithm) {
+    private List<Edge> occurrenceTableGerator(Instances dataset, Instance referenceHero, Algorithm algorithm) {
+        List<Edge> relationship = new LinkedList();
+        
         dataset.forEach((Instance instance) -> {
             OccurrenceTable table = this.relationGerator(referenceHero, instance);
-            algorithm.calculate(table.getA(), table.getB(), table.getC(), table.getD());
+            double similarity = algorithm.calculate(table.getA(), table.getB(), table.getC(), table.getD());
+            relationship.add(new Edge(instance, similarity));
         });
-        return null;
+        return relationship;
     }
 
-    public double calculateDistances(Instances dataset, Instance referenceHero, Algorithms algorithmType) {
-        Algorithm algorithm = algorithmFactory(algorithmType);
-        OccurrenceTable table = occurrenceTableGerator(dataset, referenceHero, algorithm);
-        return 0;
+    public List<Edge> calculateDistances(Instances dataset, Instance referenceHero, Algorithms algorithmType) {
+        return occurrenceTableGerator(dataset, referenceHero, algorithmFactory(algorithmType));
     }
 
     private OccurrenceTable relationGerator(Instance reference, Instance toCompare) {
         OccurrenceTable table = new OccurrenceTable();
+      
         for (int current = 1; current < reference.numAttributes(); current++) {
             String relation = Double.toString(reference.value(current)).substring(0, 1);
             relation += Double.toString(toCompare.value(current)).charAt(0);

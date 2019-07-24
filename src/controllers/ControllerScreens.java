@@ -16,7 +16,6 @@ public class ControllerScreens {
 
     private final HashMap<Scenes, Parent> allScreens = new HashMap();
     private Scenes lastScreenLoaded;
-
     public ControllerScreens() {
         this.lastScreenLoaded = null;
     }

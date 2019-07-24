@@ -3,7 +3,6 @@ package controllers;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -17,8 +16,9 @@ public class ControllerStage {
     public ControllerStage(Stage mainStage) {
         this.mainStage = mainStage;
         this.mainStage.setResizable(false);
-        this.mainStage.setTitle("");
-        this.mainStage.getIcons().add(new Image(""));
+        this.mainStage.setTitle("Prediction module - Sexta Feira");
+        
+//        this.mainStage.getIcons().add(new Image("res\\images\\icons8_ironman.png"));
     }
 
     public void changeStageContent(Parent content) {
