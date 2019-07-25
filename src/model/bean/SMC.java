@@ -31,4 +31,8 @@ public class SMC implements Algorithm {
         return one.subtract(dividend.divide(divisor, MathContext.DECIMAL64)).doubleValue();
     }
 
+    @Override
+    public double calculate(OccurrenceTable table) {
+        return this.calculate(table.getA(), table.getB(), table.getC(), table.getD());
+    }
 }

@@ -8,13 +8,12 @@ import weka.core.Instance;
  */
 public class Edge implements Comparable {
 
-    private Instance toCompare;
-    private double similarity;
+    private final Instance toCompare;
+    private final double similarity;
 
     public Edge(Instance toCompare, double similarity) {
         this.toCompare = toCompare;
         this.similarity = similarity;
-        System.out.println(similarity);
     }
 
     public Instance getToCompare() {

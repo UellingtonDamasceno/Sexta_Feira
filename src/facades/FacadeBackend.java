@@ -53,7 +53,12 @@ public class FacadeBackend {
         datasetController.addDataset(DatasetId.HEROES, heroesFileArff);
         datasetController.addDataset(DatasetId.SUPER_POWER, superPowerFileArff);
         
+//        Instances superPowerMergeHero = datasetController.merge(heroesFileArff, superPowerFileArff);
+//        
+//        datasetController.addDataset(DatasetId.SUPER_POWER_MERGE_HERO, superPowerMergeHero);
     }
+    
+    
     public List<Edge> calculateDistances(Instance referenceHero, Algorithms algorithm) throws IOException{
         Instances superPowerDataset = datasetController.getDataset(DatasetId.SUPER_POWER);
         return simmilarityController.calculateDistances(superPowerDataset, referenceHero, algorithm);
