@@ -1,23 +1,21 @@
 package model.bean;
 
-import weka.core.Instance;
-
 /**
  *
  * @author Uellington Damasceno
  */
-public class Edge implements Comparable {
+public class Result implements Comparable {
 
-    private final Instance toCompare;
+    private final String characterName;
     private final double similarity;
 
-    public Edge(Instance toCompare, double similarity) {
-        this.toCompare = toCompare;
+    public Result(String toCompare, double similarity) {
+        this.characterName = toCompare;
         this.similarity = similarity;
     }
 
-    public Instance getToCompare() {
-        return toCompare;
+    public String getToCompare() {
+        return characterName;
     }
 
     public double getSimilarity() {
@@ -27,15 +25,15 @@ public class Edge implements Comparable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 59 * hash + this.toCompare.hashCode();
+        hash = 59 * hash + this.characterName.hashCode();
         hash = 59 * hash + (int) (Double.doubleToLongBits(this.similarity) ^ (Double.doubleToLongBits(this.similarity) >>> 32));
         return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Edge) {
-            Edge other = (Edge) obj;
+        if (obj instanceof Result) {
+            Result other = (Result) obj;
             return (this.hashCode() == other.hashCode());
         }
         return false;
@@ -43,8 +41,8 @@ public class Edge implements Comparable {
 
     @Override
     public int compareTo(Object t) {
-        if (t instanceof Edge) {
-            Edge other = (Edge) t;
+        if (t instanceof Result) {
+            Result other = (Result) t;
             if (this.getSimilarity() < other.getSimilarity()) {
                 return -1;
             } else if (this.getSimilarity() > other.getSimilarity()) {
@@ -58,7 +56,7 @@ public class Edge implements Comparable {
 
     @Override
     public String toString() {
-        return toCompare.stringValue(0).concat("\n"+Double.toString(similarity));
+        return characterName.concat("\n"+Double.toString(similarity));
     }
 
 }

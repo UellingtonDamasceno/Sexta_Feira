@@ -1,7 +1,10 @@
 package controllers;
 
+import exceptions.CharacterNotFoundException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import util.Settings.DatasetId;
+import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -25,10 +28,17 @@ public class DatasetController {
         return datasets.get(id);
     }
 
-    public Instance getHeroByName(String name) {
-        Instances datasetHero = getDataset(DatasetId.HEROES); 
-//        Instance hero = datasetHero
-        return null;
+    public Instance getHeroByName(String name) throws CharacterNotFoundException {
+        Instances dataset = getDataset(DatasetId.HEROES);
+        Enumeration<Instance> enumerateInstances = dataset.enumerateInstances();
+
+        while (enumerateInstances.hasMoreElements()) {
+            Instance nextElement = enumerateInstances.nextElement();
+            if (nextElement.stringValue(1).equals(name)) {
+                return nextElement;
+            }
+        }
+        throw new CharacterNotFoundException();
     }
 
     public Instances merge(Instances destinity, Instances toMerge) {
@@ -38,8 +48,27 @@ public class DatasetController {
         return destinity;
     }
 
-    private int getIndexHero(String name) {
-        //getDataset(DatasetId.HEROES));
-        return 0;
+    public String[] getPossibleCharacterSuggestions() {
+        Instances dataset = getDataset(DatasetId.HEROES);
+        Enumeration<Object> values = dataset.attribute(1).enumerateValues();
+        String[] allValues = new String[dataset.attribute(1).numValues()];
+        for (int i = 0; values.hasMoreElements(); i++) {
+            allValues[i] = ((String) values.nextElement()).replace("'", "");
+        }
+        return allValues;
     }
+
+    public String[] PossibleSuperPowerSuggestions() {
+        Instances dataset = getDataset(DatasetId.SUPER_POWER);
+        Enumeration<Attribute> attributes = dataset.enumerateAttributes();
+        String[] allAttributes = new String[dataset.numAttributes()];
+
+        for (int i = 0; attributes.hasMoreElements(); i++) {
+            Attribute attribute = attributes.nextElement();
+            allAttributes[i] = attribute.name();
+        }
+        return allAttributes;
+
+    }
+
 }

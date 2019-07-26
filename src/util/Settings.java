@@ -21,10 +21,11 @@ public class Settings {
         SUPER_HERO_FEMALE("super_hero_female.png");
         
         private final String value;
-        private final String PATH = "res\\images\\icons8_";
+        private final String PATH;
         
         Icons(String value){
             this.value = value;
+            this.PATH = "res/images/";
         }
         
         public String getValue(){
@@ -86,15 +87,15 @@ public class Settings {
         SUPER_POWER_CSV_PRE_PROCESSED("pre-processed\\superpoderes.csv");
         
         private final String value;
-        private final String path;
+        private final String PATH;
         
         Path(String value) {
             this.value = value;
-            this.path = "res\\dataset\\";
+            this.PATH = "res\\dataset\\";
         }
 
         public String getValue() {
-            return path.concat(value);
+            return PATH.concat(value);
         }
     }
 

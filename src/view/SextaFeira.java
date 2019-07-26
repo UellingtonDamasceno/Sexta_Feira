@@ -5,10 +5,10 @@ import facades.FacadeFrontEnd;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import util.Settings.Algorithms;
+import util.Settings;
 import util.Settings.Scenes;
-import weka.core.Instances;
 
 /**
  *
@@ -18,10 +18,9 @@ public class SextaFeira extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
         try {
             FacadeBackend.getInstance().initialize();
-            Instances a = FacadeBackend.getInstance().getDataset();
-            FacadeBackend.getInstance().calculateDistances(a.get(2), Algorithms.DICE);
             FacadeFrontEnd.getInstance().initialize(primaryStage, Scenes.DASHBOARD);
         } catch (Exception ex) {
             Logger.getLogger(SextaFeira.class.getName()).log(Level.SEVERE, null, ex);

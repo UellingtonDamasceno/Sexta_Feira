@@ -1,5 +1,7 @@
 package facades;
 
+import controllers.AlgorithmController;
+import exceptions.CharacterNotFoundException;
 import controllers.DataProcessingController;
 import controllers.DatasetController;
 import controllers.FileController;
@@ -7,7 +9,9 @@ import controllers.SimilarityController;
 import exceptions.ListIsEmpty;
 import java.io.IOException;
 import java.util.List;
-import model.bean.Edge;
+import javafx.collections.ObservableList;
+import model.bean.Result;
+import util.Algorithm;
 import util.Settings.Algorithms;
 import util.Settings.DatasetId;
 import util.Settings.Path;
@@ -18,12 +22,13 @@ import weka.core.Instances;
  *
  * @author Uellington Damasceno
  */
-public class FacadeBackend {
+public class FacadeBackend{
 
     private final DataProcessingController dataProcessingController;
     private final DatasetController datasetController;
     private final FileController fileController;
     private final SimilarityController simmilarityController;
+    private final AlgorithmController algorithmController;
     private static FacadeBackend facade;
     
     private FacadeBackend() {
@@ -31,6 +36,7 @@ public class FacadeBackend {
         this.datasetController = new DatasetController();
         this.fileController = new FileController();
         this.simmilarityController = new SimilarityController();
+        this.algorithmController = new AlgorithmController();
     }
     
      static public synchronized FacadeBackend getInstance(){
@@ -51,20 +57,30 @@ public class FacadeBackend {
         Instances superPowerFileArff = fileController.convertCSVToArff(Path.SUPER_POWER_CSV_PRE_PROCESSED, Path.SUPER_POWER_FILE_ARFF);
         
         datasetController.addDataset(DatasetId.HEROES, heroesFileArff);
-        datasetController.addDataset(DatasetId.SUPER_POWER, superPowerFileArff);
-        
-//        Instances superPowerMergeHero = datasetController.merge(heroesFileArff, superPowerFileArff);
-//        
-//        datasetController.addDataset(DatasetId.SUPER_POWER_MERGE_HERO, superPowerMergeHero);
+        datasetController.addDataset(DatasetId.SUPER_POWER, superPowerFileArff);        
     }
     
     
-    public List<Edge> calculateDistances(Instance referenceHero, Algorithms algorithm) throws IOException{
+    public List<Result> calculateDistances(String name, Algorithms algorithmType) throws IOException, CharacterNotFoundException{
         Instances superPowerDataset = datasetController.getDataset(DatasetId.SUPER_POWER);
+        Algorithm algorithm = algorithmController.algorithmFactory(algorithmType);
+        Instance referenceHero = datasetController.getHeroByName(name);
         return simmilarityController.calculateDistances(superPowerDataset, referenceHero, algorithm);
     }
-    
-    public Instances getDataset(){
-        return datasetController.getDataset(DatasetId.SUPER_POWER);
+
+    public ObservableList<Algorithms> getAlgorithmsPossibilities() {
+        return algorithmController.getAlgorithmsPossibilities();
+    }
+
+    public Instance getCharacter(String name) throws CharacterNotFoundException {
+        return datasetController.getHeroByName(name);
+    }
+
+    public String[] getPossibleCharacterSuggestions() {
+      return datasetController.getPossibleCharacterSuggestions();
+    }
+
+    public String[] getPossibleSuperPowerSuggestions() {
+        return datasetController.PossibleSuperPowerSuggestions();
     }
 }

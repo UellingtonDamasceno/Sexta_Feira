@@ -1,4 +1,4 @@
-package model.bean;
+package util;
 
 import javafx.collections.ObservableList;
 

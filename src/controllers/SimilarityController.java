@@ -2,13 +2,9 @@ package controllers;
 
 import java.util.LinkedList;
 import java.util.List;
-import model.bean.Dice;
-import model.bean.Edge;
-import model.bean.Jaccard;
+import model.bean.Result;
 import model.bean.OccurrenceTable;
-import model.bean.SMC;
 import util.Algorithm;
-import util.Settings.Algorithms;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -18,19 +14,19 @@ import weka.core.Instances;
  */
 public class SimilarityController {
 
-    private List<Edge> calculate(Instances dataset, Instance referenceHero, Algorithm algorithm) {
-        List<Edge> relationship = new LinkedList();
+    private List<Result> calculate(Instances dataset, Instance referenceHero, Algorithm algorithm) {
+        List<Result> relationship = new LinkedList();
 
         dataset.forEach((Instance instance) -> {
             OccurrenceTable table = tableGenerator(referenceHero, instance);
             double similarity = algorithm.calculate(table);
-            relationship.add(new Edge(instance, similarity));
+            relationship.add(new Result(instance.attribute(0).toString(), similarity));
         });
         return relationship;
     }
 
-    public List<Edge> calculateDistances(Instances dataset, Instance referenceHero, Algorithms algorithmType) {
-        return calculate(dataset, referenceHero, algorithmFactory(algorithmType));      
+    public List<Result> calculateDistances(Instances dataset, Instance referenceHero, Algorithm algorithm) {
+        return calculate(dataset, referenceHero, algorithm);      
     }
 
     private OccurrenceTable tableGenerator(Instance reference, Instance toCompare) {
@@ -43,17 +39,4 @@ public class SimilarityController {
         return table;
     }
 
-    private Algorithm algorithmFactory(Algorithms algorithmType) {
-        switch (algorithmType) {
-            case DICE: {
-                return new Dice();
-            }
-            case JACCARD_COEFFICIENT: {
-                return new Jaccard();
-            }
-            default: {
-                return new SMC();
-            }
-        }
-    }
 }
