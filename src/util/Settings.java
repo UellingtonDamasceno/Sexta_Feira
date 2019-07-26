@@ -79,6 +79,7 @@ public class Settings {
     public enum Path {
 
         DATASET_FILE_ARFF("processed\\dataset.arff"),
+        DATASET_FILE_CSV("processed\\dataset.csv"),
         HEROES_FILE_ARFF("pre-processed\\heroes.arff"),
         HEROES_CSV_ORIGINAL("original\\herois.csv"),
         HEROES_CSV_PRE_PROCESSED("pre-processed\\heroes.csv"),

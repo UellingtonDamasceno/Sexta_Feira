@@ -5,9 +5,7 @@ import facades.FacadeFrontEnd;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import util.Settings;
 import util.Settings.Scenes;
 
 /**
