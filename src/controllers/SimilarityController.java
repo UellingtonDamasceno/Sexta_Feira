@@ -13,15 +13,16 @@ import weka.core.Instances;
  * @author Uellington Damasceno
  */
 public class SimilarityController {
-
+    
     private List<Result> calculate(Instances dataset, Instance referenceHero, Algorithm algorithm) {
         List<Result> relationship = new LinkedList();
-
+        
         dataset.forEach((Instance instance) -> {
             OccurrenceTable table = tableGenerator(referenceHero, instance);
             double similarity = algorithm.calculate(table);
-            relationship.add(new Result(instance.attribute(0).toString(), similarity));
+            relationship.add(new Result(instance.stringValue(0), similarity));
         });
+        
         return relationship;
     }
 

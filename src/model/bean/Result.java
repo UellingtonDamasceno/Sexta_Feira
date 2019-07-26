@@ -9,12 +9,12 @@ public class Result implements Comparable {
     private final String characterName;
     private final double similarity;
 
-    public Result(String toCompare, double similarity) {
-        this.characterName = toCompare;
+    public Result(String characterName, double similarity) {
+        this.characterName = characterName;
         this.similarity = similarity;
     }
 
-    public String getToCompare() {
+    public String getCharacterName() {
         return characterName;
     }
 

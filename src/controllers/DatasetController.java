@@ -40,14 +40,14 @@ public class DatasetController {
         }
         throw new CharacterNotFoundException();
     }
-
+/*
     public Instances merge(Instances destinity, Instances toMerge) {
         toMerge.stream().filter((instance) -> (destinity.contains(instance))).forEachOrdered((instance) -> {
             destinity.add(instance);
         });
         return destinity;
     }
-
+*/
     public String[] getPossibleCharacterSuggestions() {
         Instances dataset = getDataset(DatasetId.HEROES);
         Enumeration<Object> values = dataset.attribute(1).enumerateValues();

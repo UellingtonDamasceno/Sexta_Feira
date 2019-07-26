@@ -33,6 +33,7 @@ public class SMC implements Algorithm {
 
     @Override
     public double calculate(OccurrenceTable table) {
+        System.out.println(table);
         return this.calculate(table.getA(), table.getB(), table.getC(), table.getD());
     }
 }

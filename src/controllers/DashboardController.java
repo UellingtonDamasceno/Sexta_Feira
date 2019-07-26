@@ -3,26 +3,33 @@ package controllers;
 import exceptions.CharacterNotFoundException;
 import facades.FacadeBackend;
 import facades.FacadeFrontEnd;
+import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
+import model.bean.Result;
 import org.controlsfx.control.textfield.TextFields;
 import util.Settings.Algorithms;
 import weka.core.Instance;
@@ -34,38 +41,27 @@ import weka.core.Instance;
  */
 public class DashboardController implements Initializable {
 
-    @FXML
-    private TextArea txtAreaInfoHero;
-    @FXML
-    private VBox vboxContent;
-    @FXML
-    private TextArea txtAreaInfoSelectedHero;
-    @FXML
-    private TableColumn<?, ?> tcHero;
-    @FXML
-    private TableColumn<?, ?> tcSimilarity;
-    @FXML
-    private TextField txtGetHero;
-    @FXML
-    private TextField txtAcCharacteristc;
-    @FXML
-    private ComboBox<Algorithms> comboBoxAlgorithms;
-    @FXML
-    private TableView<?> tableResultado;
-    @FXML
-    private Slider slider;
-    @FXML
+    @FXML   private TextArea txtAreaInfoHero;
+    @FXML   private VBox vboxContent;
+    @FXML   private TextArea txtAreaInfoSelectedHero;
+    @FXML   private TableColumn<Result, String> tcHero;
+    @FXML   private TableColumn<Result, Double> tcSimilarity;
+    @FXML   private TextField txtGetHero;
+    @FXML   private TextField txtAcCharacteristc;
+    @FXML   private ComboBox<Algorithms> comboBoxAlgorithms;
+    @FXML   private TableView<Result> tableResultado;
+    @FXML   private Slider slider;
     private Label value;
-    @FXML
-    private Button add;
-    @FXML
-    private Button calculate;
+    @FXML   private Button add;
+    @FXML   private Button calculate;
 
     private FacadeFrontEnd facade;
     private FacadeBackend facadeb;
 
     String[] heroes;
     String[] superPower;
+    @FXML
+    private TextField txtResultsNumber;
 
     /**
      * Initializes the controller class.
@@ -79,7 +75,7 @@ public class DashboardController implements Initializable {
 
         initComboBox();
         initTextFieldsAC();
-
+       
         add.setDisable(true);
         calculate.setDisable(true);
     }
@@ -96,7 +92,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void changeTheValue(MouseEvent event) {
-        value.setText(String.valueOf((int) slider.getValue()));
+//        value.setText(String.valueOf((int) slider.getValue()));
     }
 
     private void initComboBox() {
@@ -109,18 +105,32 @@ public class DashboardController implements Initializable {
         TextFields.bindAutoCompletion(txtAcCharacteristc, superPower);
     }
 
+    
+    private void initTable(List<Result> results){
+        
+        tcHero.setCellValueFactory(new PropertyValueFactory<>("characterName"));             
+        tcSimilarity.setCellValueFactory(new PropertyValueFactory<>("similarity"));
+    
+        tableResultado.getItems().setAll(results);
+    }
+
     @FXML
     private void calculate(ActionEvent event) {
-        ObservableList<?> generatedList;
-
-        /*
-        facade.calculate();
-        ObservableList<?> generatedList = getObservableListResults();
-        if(generated != null){
-            tableResultado.setItems(generated)
-        }
         
-         */
+       List<Result> generatedList;
+        try {
+            generatedList = facadeb.calculateDistances(txtGetHero.getText(), comboBoxAlgorithms.getValue());
+            ObservableList<Result> generated = FXCollections.observableArrayList(generatedList);
+            initTable(generatedList);
+            if(generated != null){
+                 tableResultado.setItems(generated);
+            }
+        } catch (IOException | CharacterNotFoundException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
+         
         //Tem que mudar o termo genérico ( ? ) tanto do observable quanto da tableView
         //Indicação:
         //Fazer uma classe Results com um obj e um Double score
