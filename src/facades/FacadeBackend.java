@@ -55,25 +55,25 @@ public class FacadeBackend {
 
         List<String[]> heroFilePreProcessed = dataProcessingController.standardizeValues(contentHeroFile, DatasetId.HEROES);
         List<String[]> superPowerFilePreProcessed = dataProcessingController.standardizeValues(contentSuperPowerFile, DatasetId.SUPER_POWER);
-        List<String[]> datasetMerge = datasetController.merge(heroFilePreProcessed, superPowerFilePreProcessed);
+        //List<String[]> datasetMerge = dataProcessingController.merge(heroFilePreProcessed, superPowerFilePreProcessed);
 
         fileController.witerCSV(Path.HEROES_CSV_PRE_PROCESSED, heroFilePreProcessed);
         fileController.witerCSV(Path.SUPER_POWER_CSV_PRE_PROCESSED, superPowerFilePreProcessed);
-        fileController.witerCSV(Path.DATASET_FILE_CSV, datasetMerge);
+        //fileController.witerCSV(Path.DATASET_FILE_CSV, datasetMerge);
 
         Instances heroesFileArff = fileController.convertCSVToArff(Path.HEROES_CSV_PRE_PROCESSED, Path.HEROES_FILE_ARFF);
         Instances superPowerFileArff = fileController.convertCSVToArff(Path.SUPER_POWER_CSV_PRE_PROCESSED, Path.SUPER_POWER_FILE_ARFF);
-        Instances superPowerMergeHero = fileController.convertCSVToArff(Path.DATASET_FILE_CSV, Path.DATASET_FILE_ARFF);
+        //Instances superPowerMergeHero = fileController.convertCSVToArff(Path.DATASET_FILE_CSV, Path.DATASET_FILE_ARFF);
 
         datasetController.addDataset(DatasetId.HEROES, heroesFileArff);
         datasetController.addDataset(DatasetId.SUPER_POWER, superPowerFileArff);
-        datasetController.addDataset(DatasetId.SUPER_POWER_MERGE_HERO, superPowerMergeHero);
+        //datasetController.addDataset(DatasetId.SUPER_POWER_MERGE_HERO, superPowerMergeHero);
 
-        predictionController.createTree(superPowerMergeHero, PredictionClasses.FLIGHT.getValue());
-        predictionController.createTree(superPowerMergeHero, PredictionClasses.SUPER_STRENGTH.getValue());
-        predictionController.createTree(superPowerMergeHero, PredictionClasses.ACCELERATED_HEALING.getValue());
-        predictionController.createTree(superPowerMergeHero, PredictionClasses.ALIGNMENT.getValue());
-        predictionController.createTree(superPowerMergeHero, PredictionClasses.INVISIBILITY.getValue());
+//        predictionController.createTree(superPowerMergeHero, PredictionClasses.FLIGHT.getValue());
+//        predictionController.createTree(superPowerMergeHero, PredictionClasses.SUPER_STRENGTH.getValue());
+//        predictionController.createTree(superPowerMergeHero, PredictionClasses.ACCELERATED_HEALING.getValue());
+//        predictionController.createTree(superPowerMergeHero, PredictionClasses.ALIGNMENT.getValue());
+//        predictionController.createTree(superPowerMergeHero, PredictionClasses.INVISIBILITY.getValue());
 
     }
 
@@ -88,7 +88,7 @@ public class FacadeBackend {
         return algorithmController.getAlgorithmsPossibilities();
     }
 
-    public Instance getCharacter(String name) throws CharacterNotFoundException {
+    public Instance getCharacterByName(String name) throws CharacterNotFoundException {
         return datasetController.getHeroByName(DatasetId.HEROES, 1, name);
     }
 

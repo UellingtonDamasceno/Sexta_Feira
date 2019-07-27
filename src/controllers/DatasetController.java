@@ -42,30 +42,6 @@ public class DatasetController {
         throw new CharacterNotFoundException();
     }
 
-    public List<String[]> merge(List<String[]> datasetA, List<String[]> datasetB) {
-        ArrayList<String[]> result = new ArrayList();
-
-        String[] header = new String[((datasetA.get(0).length) + (datasetB.get(0).length - 1))];
-
-        System.arraycopy(datasetA.get(0), 0, header, 0, datasetA.get(0).length);
-        System.arraycopy(datasetB.get(0), 1, header, datasetA.get(0).length, datasetB.get(0).length - 1);
-
-        result.add(0, header);
-
-        datasetA.forEach((contentA) -> {
-            datasetB.stream().filter((contentB) -> (contentA[1].equals(contentB[0]))).map((contentB) -> {
-                int length = contentA.length + (contentB.length - 1);
-                String[] merge = new String[length];
-                System.arraycopy(contentA, 0, merge, 0, contentA.length);
-                System.arraycopy(contentB, 1, merge, contentA.length, contentB.length - 1);
-                return merge;
-            }).forEachOrdered((merge) -> {
-                result.add(merge);
-            });
-        });
-        return result;
-    }
-
     public String[] getPossibleCharacterSuggestions() {
         Instances dataset = getDataset(DatasetId.HEROES);
         Enumeration<Object> values = dataset.attribute(1).enumerateValues();

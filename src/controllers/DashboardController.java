@@ -125,7 +125,7 @@ public class DashboardController implements Initializable {
         textAreaEmpty();
         textCHSelectedEmpty();
         try {
-            character = facadeb.getCharacter(txtGetHero.getText());
+            character = facadeb.getCharacterByName(txtGetHero.getText());
             System.out.println("load");
             setLabel(character, labelInfos);
 
@@ -213,7 +213,7 @@ public class DashboardController implements Initializable {
             try {
                 selectedCName.setText(Ch);
                 selectedCName.setVisible(true);
-                Instance character = facadeb.getCharacter(Ch);
+                Instance character = facadeb.getCharacterByName(Ch);
                 setLabel(character, selectedCCha);
                 selectedCCha.setVisible(true);
             } catch (CharacterNotFoundException ex) {

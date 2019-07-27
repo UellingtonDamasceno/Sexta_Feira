@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import util.Settings.FileSettings;
@@ -34,11 +35,35 @@ public class DataProcessingController {
                 line[i] = (line[i].equalsIgnoreCase("true"))
                         ? FileSettings.TRUE.getValue()
                         : (line[i].equalsIgnoreCase("false"))
-                                ? FileSettings.FALSE.getValue()
-                                : line[i];
+                        ? FileSettings.FALSE.getValue()
+                        : line[i];
             }
         });
         return contentFile;
+    }
+
+    public List<String[]> merge(List<String[]> datasetA, List<String[]> datasetB) {
+        ArrayList<String[]> result = new ArrayList();
+
+        String[] header = new String[((datasetA.get(0).length) + (datasetB.get(0).length - 1))];
+
+        System.arraycopy(datasetA.get(0), 0, header, 0, datasetA.get(0).length);
+        System.arraycopy(datasetB.get(0), 1, header, datasetA.get(0).length, datasetB.get(0).length - 1);
+
+        result.add(0, header);
+
+        datasetA.forEach((contentA) -> {
+            datasetB.stream().filter((contentB) -> (contentA[1].equals(contentB[0]))).map((contentB) -> {
+                int length = contentA.length + (contentB.length - 1);
+                String[] merge = new String[length];
+                System.arraycopy(contentA, 0, merge, 0, contentA.length);
+                System.arraycopy(contentB, 1, merge, contentA.length, contentB.length - 1);
+                return merge;
+            }).forEachOrdered((merge) -> {
+                result.add(merge);
+            });
+        });
+        return result;
     }
 
     private List<String[]> replaceEmpatyValues(List<String> content) {
@@ -51,12 +76,10 @@ public class DataProcessingController {
 
     private List<String[]> standardization(List<String[]> contentFile, StandardValues value) {
         LinkedList<String[]> linesToRemove = new LinkedList();
-        //int[] indexGenerator = new int[1];
         contentFile.forEach((String[] line) -> {
             if (line.length < value.getValue()) {
                 linesToRemove.add(line);
             } else {
-                //line[0] = String.valueOf(indexGenerator[0]++);
                 for (int i = 0; i < line.length; i++) {
                     if (line[i] == null || line[i].trim().isEmpty()) {
                         line[i] = FileSettings.STANDARD_CHARACTER.getValue();
