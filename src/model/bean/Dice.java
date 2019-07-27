@@ -26,14 +26,14 @@ public class Dice implements Algorithm {
 
     @Override
     public double calculate(int a, int b, int c, int d) {
-        BigDecimal dividend = new BigDecimal(2*a);
+        BigDecimal dividend = new BigDecimal(2 * a);
         BigDecimal one = new BigDecimal(1);
-        BigDecimal divisor = new BigDecimal((2*a) + b + c);
+        BigDecimal divisor = new BigDecimal((2 * a) + b + c);
         return one.subtract(dividend.divide(divisor, MathContext.DECIMAL64)).doubleValue();
     }
 
     @Override
     public double calculate(OccurrenceTable table) {
-        return this.calculate(table.getA(), table.getB(),  table.getC(), table.getD());
+        return this.calculate(table.getA(), table.getB(), table.getC(), table.getD());
     }
 }
