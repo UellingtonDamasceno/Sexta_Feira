@@ -20,7 +20,7 @@ public class DataProcessingController {
             contentFilePreProcessed =  standardizeValuesHeroFile(contentFilePreProcessed);
             standardNumber = StandardValues.NUMBER_ATTRIBUTE_HERO;
         }else{
-            contentFilePreProcessed = replaceBinariesValues(contentFilePreProcessed);
+            //contentFilePreProcessed = replaceBinariesValues(contentFilePreProcessed);
             standardNumber = StandardValues.NUMBER_ATTRIBUTE_SUPER_POWER;
         }
   

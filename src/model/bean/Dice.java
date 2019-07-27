@@ -29,6 +29,7 @@ public class Dice implements Algorithm {
         BigDecimal dividend = new BigDecimal(2*a);
         BigDecimal one = new BigDecimal(1);
         BigDecimal divisor = new BigDecimal((2*a) + b + c);
+        System.out.println(one.subtract(dividend.divide(divisor, MathContext.DECIMAL64)).toString());
         return one.subtract(dividend.divide(divisor, MathContext.DECIMAL64)).doubleValue();
     }
 

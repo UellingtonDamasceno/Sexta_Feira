@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,14 +19,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 import model.bean.Result;
 import org.controlsfx.control.textfield.TextFields;
 import util.Settings.Algorithms;
@@ -68,13 +64,13 @@ public class DashboardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.facadeb = FacadeBackend.getInstance();
-
-        heroes = facadeb.getPossibleCharacterSuggestions();
-        superPower = facadeb.getPossibleSuperPowerSuggestions();
-
-        initComboBox();
-        initTextFieldsAC();
+//        this.facadeb = FacadeBackend.getInstance();
+//
+//        heroes = facadeb.getPossibleCharacterSuggestions();
+//        superPower = facadeb.getPossibleSuperPowerSuggestions();
+//
+//        initComboBox();
+//        initTextFieldsAC();
        
         add.setDisable(true);
         calculate.setDisable(true);

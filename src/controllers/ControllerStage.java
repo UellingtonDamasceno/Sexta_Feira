@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import util.Settings;
 import util.Settings.Icons;
 
 /**
@@ -20,7 +19,7 @@ public class ControllerStage {
         this.mainStage = mainStage;
         this.mainStage.setResizable(false);
         this.mainStage.setTitle("Prediction module - Friday");
-        //this.mainStage.getIcons().add(new Image(Icons.IRON_MAN.getValue()));
+//        this.mainStage.getIcons().add(new Image(getClass().getResource(Icons.IRON_MAN.getValue()).toExternalForm()));
     }
 
     public void changeStageContent(Parent content) {
