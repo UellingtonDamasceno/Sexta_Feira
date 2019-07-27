@@ -46,7 +46,7 @@ public class OccurrenceTable {
     public int getD() {
         return d;
     }
-    
+
     @Override
     public String toString() {
         return "================================="

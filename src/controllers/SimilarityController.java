@@ -27,7 +27,7 @@ public class SimilarityController {
     }
 
     public List<Result> calculateDistances(Instances dataset, Instance referenceHero, Algorithm algorithm) {
-        return calculate(dataset, referenceHero, algorithm);      
+        return calculate(dataset, referenceHero, algorithm);
     }
 
     private OccurrenceTable tableGenerator(Instance reference, Instance toCompare) {

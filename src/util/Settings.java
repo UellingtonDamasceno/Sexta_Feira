@@ -7,12 +7,13 @@ package util;
 public class Settings {
 
     public enum Algorithms {
+
         JACCARD_COEFFICIENT,
         SMC,
         DICE;
     }
 
-    public enum Icons{
+    public enum Icons {
         ALIGNMENT_BAD("alingment/bad.png"),
         ALIGMENT_GOOD("alingment/good.png"),
         ALIGMENT_NEUTRAL("alingment/neutral.png"),
@@ -26,20 +27,39 @@ public class Settings {
         PUBLISHER_DC("publisher/dc.png"),
         PUBLISHER_MARVEL("publisher/marvel.png"),
         WEIGHT("weight.png");
-        
+
         private final String value;
         private final String PATH;
-        
-        Icons(String value){
+
+        Icons(String value) {
             this.value = value;
             this.PATH = "res/images/";
         }
-        
-        public String getValue(){
+
+        public String getValue() {
             return this.PATH.concat(value);
         }
     }
-    
+
+    public enum PredictionClasses {
+
+        FLIGHT(19),
+        SUPER_STRENGTH(28),
+        ACCELERATED_HEALING(12),
+        ALIGNMENT(9),
+        INVISIBILITY(145);
+
+        private final int value;
+
+        PredictionClasses(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return this.value;
+        }
+    }
+
     public enum StandardValues {
 
         MINIMUM_ALLOWED_VALUE(0),
@@ -58,6 +78,7 @@ public class Settings {
     }
 
     public enum FileSettings {
+
         FALSE("0"),
         TRUE("1"),
         CSV_DIVISOR(","),
@@ -78,6 +99,7 @@ public class Settings {
     }
 
     public enum DatasetId {
+
         HEROES,
         SUPER_POWER,
         SUPER_POWER_MERGE_HERO;
@@ -93,10 +115,10 @@ public class Settings {
         SUPER_POWER_FILE_ARFF("pre-processed\\superpowers.arff"),
         SUPER_POWER_CSV_ORIGINAL("original\\superpoderes.csv"),
         SUPER_POWER_CSV_PRE_PROCESSED("pre-processed\\superpoderes.csv");
-        
+
         private final String value;
         private final String PATH;
-        
+
         Path(String value) {
             this.value = value;
             this.PATH = "res\\dataset\\";
@@ -108,7 +130,7 @@ public class Settings {
     }
 
     public enum Scenes {
-      
+
         DASHBOARD("/view/Dashboard.fxml", true);
 
         private final String value;

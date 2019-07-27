@@ -6,6 +6,7 @@ import controllers.DataProcessingController;
 import controllers.DatasetController;
 import controllers.FileController;
 import controllers.SimilarityController;
+import controllers.PredictionController;
 import exceptions.ListIsEmpty;
 import java.io.IOException;
 import java.util.List;
@@ -15,6 +16,7 @@ import util.Algorithm;
 import util.Settings.Algorithms;
 import util.Settings.DatasetId;
 import util.Settings.Path;
+import util.Settings.PredictionClasses;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -29,22 +31,24 @@ public class FacadeBackend {
     private final DatasetController datasetController;
     private final FileController fileController;
     private final SimilarityController simmilarityController;
-    
+    private final PredictionController predictionController;
     private static FacadeBackend facade;
 
+
     private FacadeBackend() {
-        this.algorithmController = new AlgorithmController();
         this.dataProcessingController = new DataProcessingController();
         this.datasetController = new DatasetController();
         this.fileController = new FileController();
         this.simmilarityController = new SimilarityController();
+        this.algorithmController = new AlgorithmController();
+        this.predictionController = new PredictionController();
     }
 
     static public synchronized FacadeBackend getInstance() {
         return (facade == null) ? facade = new FacadeBackend() : facade;
     }
 
-    public void initialize() throws IOException, ListIsEmpty {
+    public void initialize() throws IOException, ListIsEmpty, Exception {
         List<String> contentHeroFile = fileController.readCSV(Path.HEROES_CSV_ORIGINAL);
         List<String> contentSuperPowerFile = fileController.readCSV(Path.SUPER_POWER_CSV_ORIGINAL);
 
@@ -64,6 +68,13 @@ public class FacadeBackend {
         datasetController.addDataset(DatasetId.HEROES, heroesFileArff);
         datasetController.addDataset(DatasetId.SUPER_POWER, superPowerFileArff);
         datasetController.addDataset(DatasetId.SUPER_POWER_MERGE_HERO, superPowerMergeHero);
+
+        predictionController.createTree(superPowerMergeHero, PredictionClasses.FLIGHT.getValue());
+        predictionController.createTree(superPowerMergeHero, PredictionClasses.SUPER_STRENGTH.getValue());
+        predictionController.createTree(superPowerMergeHero, PredictionClasses.ACCELERATED_HEALING.getValue());
+        predictionController.createTree(superPowerMergeHero, PredictionClasses.ALIGNMENT.getValue());
+        predictionController.createTree(superPowerMergeHero, PredictionClasses.INVISIBILITY.getValue());
+
     }
 
     public List<Result> calculateDistances(String name, Algorithms algorithmType) throws IOException, CharacterNotFoundException {
@@ -88,4 +99,9 @@ public class FacadeBackend {
     public String[] getPossibleSuperPowerSuggestions() {
         return datasetController.PossibleSuperPowerSuggestions();
     }
+
+    public void calculatePrediction() {
+
+    }
+
 }
