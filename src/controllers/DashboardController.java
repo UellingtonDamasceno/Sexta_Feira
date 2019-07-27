@@ -70,7 +70,11 @@ public class DashboardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.facadeb = FacadeBackend.getInstance();
+        try {
+            this.facadeb = FacadeBackend.getInstance();
+        } catch (Exception ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         heroes = facadeb.getPossibleCharacterSuggestions();
         superPower = facadeb.getPossibleSuperPowerSuggestions();
@@ -112,27 +116,27 @@ public class DashboardController implements Initializable {
         ObservableList<?> generatedList;
 
         /*
-        facade.calculate();
-        ObservableList<?> generatedList = getObservableListResults();
-        if(generated != null){
-            tableResultado.setItems(generated)
-        }
-        
+         facade.calculate();
+         ObservableList<?> generatedList = getObservableListResults();
+         if(generated != null){
+         tableResultado.setItems(generated)
+         }
+
          */
         //Tem que mudar o termo genérico ( ? ) tanto do observable quanto da tableView
         //Indicação:
         //Fazer uma classe Results com um obj e um Double score
         /*
-        //Como transformar os objetos Results em ObservableList:
-        //pode ser criada com qualquer lista
-        public ObervableList<Results> getResults(){
-            ArrayList<Results> results = new ArrayList();
-            // adicione os objetos a esse array de resultados
-            return  FXColections.observableArrayList(results);
-        }
-        => e ta pronto o sorvetinho
-        
-        =>Esse método também equivale para o ComboBOx
+         //Como transformar os objetos Results em ObservableList:
+         //pode ser criada com qualquer lista
+         public ObervableList<Results> getResults(){
+         ArrayList<Results> results = new ArrayList();
+         // adicione os objetos a esse array de resultados
+         return  FXColections.observableArrayList(results);
+         }
+         => e ta pronto o sorvetinho
+
+         =>Esse método também equivale para o ComboBOx
          */
         //ObservableList<Results> generatedList = facade.calculate();
         //Mudar lá em cima para:
