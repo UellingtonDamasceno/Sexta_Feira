@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import model.bean.Result;
@@ -22,12 +23,13 @@ public class SimilarityController {
             double similarity = algorithm.calculate(table);
             relationship.add(new Result(instance.stringValue(0), similarity));
         });
-        
         return relationship;
     }
 
     public List<Result> calculateDistances(Instances dataset, Instance referenceHero, Algorithm algorithm) {
-        return calculate(dataset, referenceHero, algorithm);
+        List<Result> list = calculate(dataset, referenceHero, algorithm);
+        Collections.sort(list, Collections.reverseOrder());
+        return list;        
     }
 
     private OccurrenceTable tableGenerator(Instance reference, Instance toCompare) {

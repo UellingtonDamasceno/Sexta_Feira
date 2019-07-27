@@ -2,6 +2,7 @@ package controllers;
 
 import exceptions.CharacterNotFoundException;
 import facades.FacadeBackend;
+import facades.FacadeFrontEnd;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -42,7 +43,7 @@ public class DashboardController implements Initializable {
 
     @FXML    private VBox vboxContent;
     @FXML    private TableColumn<Result, String> tcHero;
-    @FXML    private TableColumn<Result, Double> tcSimilarity;
+    @FXML    private TableColumn<Result, String> tcSimilarity;
     @FXML    private TextField txtGetHero;
     @FXML    private TextField txtAcCharacteristc;
     @FXML    private ComboBox<Algorithms> comboBoxAlgorithms;
@@ -57,12 +58,15 @@ public class DashboardController implements Initializable {
     @FXML    private Label selectedCCha;
 
     private FacadeBackend facadeb;
+    private FacadeFrontEnd facadef;
+    
     private String[] heroes;
     private String[] superPower;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.facadeb = FacadeBackend.getInstance();
+        this.facadef = FacadeFrontEnd.getInstance();
 
         heroes = facadeb.getPossibleCharacterSuggestions();
         superPower = facadeb.getPossibleSuperPowerSuggestions();
@@ -99,7 +103,8 @@ public class DashboardController implements Initializable {
 
     private void initTable(List<Result> results) {
         tcHero.setCellValueFactory(new PropertyValueFactory<>("characterName"));
-        tcSimilarity.setCellValueFactory(new PropertyValueFactory<>("similarity"));
+        tcSimilarity.setCellValueFactory(new PropertyValueFactory<>("strSimilarity"));
+        tableResultado.getSortOrder().setAll(tcSimilarity);
         tableResultado.getItems().setAll(results);
     }
 
@@ -109,13 +114,13 @@ public class DashboardController implements Initializable {
         List<Result> generatedList;
         try {
             generatedList = facadeb.calculateDistances(txtGetHero.getText(), comboBoxAlgorithms.getValue());
-            ObservableList<Result> generated = FXCollections.observableArrayList(generatedList);
+            ObservableList<Result> generated = FXCollections.observableArrayList(generatedList.subList(0, ((int)slider.getValue() - 1)));
             initTable(generated);
             if (generated != null) {
                 tableResultado.setItems(generated);
             }
         } catch (IOException | CharacterNotFoundException ex) {
-            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+            facadef.newAlert("CharacterNotFoundException", "Não foi possível encontrar o personagem");
         }
     }
 
@@ -126,13 +131,8 @@ public class DashboardController implements Initializable {
         textCHSelectedEmpty();
         try {
             character = facadeb.getCharacterByName(txtGetHero.getText());
-            System.out.println("load");
             setLabel(character, labelInfos);
-
-            // txtAreaInfoHero.setText(character.toString());
             add.setDisable(false);
-            calculate.setDisable(false);
-
         } catch (CharacterNotFoundException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -163,14 +163,15 @@ public class DashboardController implements Initializable {
         selectedCCha.setVisible(false);
     }
 
-    private void setLabel(Instance character, Label label) {
-        //74,Beast,Male,blue,Mutant,Blue,180,'Marvel Comics',blue,good,181
+private void setLabel(Instance character, Label label) {
         String[] values = character.toString().split(",");
         String all = "";
+
         for (int i = 2; i <= 10; i++) {
-            if (!values[i].equals("-") || !values[i].equals("-99")) {
-                all = all + getAtribute(i) + values[i].replaceAll("'", "") + "\n";
+            if (values[i].equals("-") || values[i].equals("-99")) {
+                values[i] = "Unknown";
             }
+            all += getAtribute(i) + values[i].replaceAll("'", "") + "\n";
         }
         label.setText(all);
         label.setVisible(true);
@@ -207,8 +208,11 @@ public class DashboardController implements Initializable {
     }
 
     @SuppressWarnings("empty-statement")
+    @FXML
     private void selectACHFromTable(MouseEvent event) {
+        selectedCName.setVisible(false);
         String Ch = tableResultado.getSelectionModel().getSelectedItem().getCharacterName();
+
         if (Ch != null) {
             try {
                 selectedCName.setText(Ch);
@@ -217,8 +221,20 @@ public class DashboardController implements Initializable {
                 setLabel(character, selectedCCha);
                 selectedCCha.setVisible(true);
             } catch (CharacterNotFoundException ex) {
+                facadef.newAlert("CharacterNotFoundException", "Não foi possível encontrar o personagem");
+                textCHSelectedEmpty();
+            } catch(NullPointerException ex){
+                facadef.newAlert("Null", "Nothig selected");
+                textCHSelectedEmpty();
             }
         }
+    }
+
+    @FXML
+    private void comboBoxAlgorithmsOnAction(ActionEvent event) {
+        if(comboBoxAlgorithms.getValue() != null){
+            calculate.setDisable(false);
+        }         
     }
 
 }

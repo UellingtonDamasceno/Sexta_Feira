@@ -26,7 +26,7 @@
    <children>
       <Separator layoutX="352.0" orientation="VERTICAL" prefHeight="609.0" prefWidth="8.0" AnchorPane.leftAnchor="350.0" />
       <Separator layoutX="682.0" orientation="VERTICAL" prefHeight="609.0" prefWidth="0.0" AnchorPane.leftAnchor="700.0" />
-      <TableView fx:id="tableResultado" layoutX="358.0" layoutY="7.0" prefHeight="619.0" prefWidth="338.0">
+      <TableView fx:id="tableResultado" layoutX="358.0" layoutY="7.0" onMouseClicked="#selectACHFromTable" prefHeight="619.0" prefWidth="338.0">
         <columns>
           <TableColumn fx:id="tcHero" editable="false" maxWidth="237.0" minWidth="237.0" prefWidth="237.0" text="Personagem" />
           <TableColumn fx:id="tcSimilarity" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Score" />
@@ -37,7 +37,7 @@
             <VBox fx:id="vboxContent" alignment="TOP_CENTER" disable="true" prefHeight="192.0" prefWidth="318.0" />
          </content>
       </ScrollPane>
-      <ComboBox fx:id="comboBoxAlgorithms" layoutX="14.0" layoutY="498.0" prefHeight="29.0" prefWidth="320.0" promptText="MEDIDA DE ANÁLISE" />
+      <ComboBox fx:id="comboBoxAlgorithms" layoutX="14.0" layoutY="498.0" onAction="#comboBoxAlgorithmsOnAction" prefHeight="29.0" prefWidth="320.0" promptText="MEDIDA DE ANÁLISE" />
       <Slider fx:id="slider" layoutX="14.0" layoutY="567.0" majorTickUnit="1.0" max="700.0" min="1.0" minorTickCount="1" prefHeight="14.0" prefWidth="320.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
       <Label layoutX="14.0" layoutY="4.0" text="Buscar um personagem:">
          <font>

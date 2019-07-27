@@ -28,7 +28,7 @@ public class SMC implements Algorithm {
         BigDecimal dividend = new BigDecimal(a + d);
         BigDecimal divisor = new BigDecimal(a + b + c + d);
         BigDecimal one = new BigDecimal(1);
-        return one.subtract(dividend.divide(divisor, MathContext.DECIMAL64)).doubleValue();
+        return one.subtract(dividend.divide(divisor, MathContext.DECIMAL32)).doubleValue();
     }
 
     @Override

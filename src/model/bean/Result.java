@@ -8,10 +8,16 @@ public class Result implements Comparable {
 
     private final String characterName;
     private final double similarity;
+    private final String strSimilarity;
 
     public Result(String characterName, double similarity) {
         this.characterName = characterName;
+        this.strSimilarity = String.format("%.2f", similarity);
         this.similarity = similarity;
+    }
+
+    public String getStrSimilarity() {
+        return strSimilarity;
     }
 
     public String getCharacterName() {
