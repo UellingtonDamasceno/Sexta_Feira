@@ -12,34 +12,6 @@ public class Settings {
         DICE;
     }
 
-    public enum Icons {
-        ALIGNMENT_BAD("alingment/bad.png"),
-        ALIGMENT_GOOD("alingment/good.png"),
-        ALIGMENT_NEUTRAL("alingment/neutral.png"),
-        IRON_MAN("heroes/ironman.png"),
-        HEIGHT("height.png"),
-        HELP("help.png"),
-        LIGHTNING_BOLT("lightning_bolt.png"),
-        MODULE("module.png"),
-        SUPER_HERO_MALE("gender/super_hero_male.png"),
-        SUPER_HERO_FEMALE("gender/super_hero_female.png"),
-        PUBLISHER_DC("publisher/dc.png"),
-        PUBLISHER_MARVEL("publisher/marvel.png"),
-        WEIGHT("weight.png");
-
-        private final String value;
-        private final String PATH;
-
-        Icons(String value) {
-            this.value = value;
-            this.PATH = "res/images/";
-        }
-
-        public String getValue() {
-            return this.PATH.concat(value);
-        }
-    }
-
     public enum PredictionClasses {
 
         FLIGHT(19),
@@ -56,6 +28,27 @@ public class Settings {
 
         public int getValue() {
             return this.value;
+        }
+    }
+
+    public enum Icons {
+
+        IRON_MAN("ironman.png"),
+        LIGHTNING_BOLT("lightning_bolt.png"),
+        MODULE("module.png"),
+        SUPER_HERO_MALE("super_hero_male.png"),
+        SUPER_HERO_FEMALE("super_hero_female.png");
+
+        private final String value;
+        private final String PATH;
+
+        Icons(String value) {
+            this.value = value;
+            this.PATH = "res/images/";
+        }
+
+        public String getValue() {
+            return this.PATH.concat(value);
         }
     }
 

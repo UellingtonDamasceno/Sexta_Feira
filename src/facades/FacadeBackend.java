@@ -13,6 +13,7 @@ import java.util.List;
 import javafx.collections.ObservableList;
 import model.bean.Result;
 import util.Algorithm;
+import util.Settings;
 import util.Settings.Algorithms;
 import util.Settings.DatasetId;
 import util.Settings.Path;
@@ -26,14 +27,13 @@ import weka.core.Instances;
  */
 public class FacadeBackend {
 
-    private final AlgorithmController algorithmController;
     private final DataProcessingController dataProcessingController;
     private final DatasetController datasetController;
     private final FileController fileController;
     private final SimilarityController simmilarityController;
+    private final AlgorithmController algorithmController;
     private final PredictionController predictionController;
     private static FacadeBackend facade;
-
 
     private FacadeBackend() {
         this.dataProcessingController = new DataProcessingController();
@@ -42,9 +42,10 @@ public class FacadeBackend {
         this.simmilarityController = new SimilarityController();
         this.algorithmController = new AlgorithmController();
         this.predictionController = new PredictionController();
+
     }
 
-    static public synchronized FacadeBackend getInstance() {
+    static public synchronized FacadeBackend getInstance(){
         return (facade == null) ? facade = new FacadeBackend() : facade;
     }
 
@@ -54,7 +55,6 @@ public class FacadeBackend {
 
         List<String[]> heroFilePreProcessed = dataProcessingController.standardizeValues(contentHeroFile, DatasetId.HEROES);
         List<String[]> superPowerFilePreProcessed = dataProcessingController.standardizeValues(contentSuperPowerFile, DatasetId.SUPER_POWER);
-
         List<String[]> datasetMerge = datasetController.merge(heroFilePreProcessed, superPowerFilePreProcessed);
 
         fileController.witerCSV(Path.HEROES_CSV_PRE_PROCESSED, heroFilePreProcessed);
@@ -98,10 +98,6 @@ public class FacadeBackend {
 
     public String[] getPossibleSuperPowerSuggestions() {
         return datasetController.PossibleSuperPowerSuggestions();
-    }
-
-    public void calculatePrediction() {
-
     }
 
 }
