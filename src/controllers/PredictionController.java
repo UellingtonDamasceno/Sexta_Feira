@@ -31,7 +31,6 @@ public class PredictionController {
         tree.buildClassifier(instance);
         evaluation = new Evaluation(instance);
         evaluation.crossValidateModel(tree, instance, 10, new Random(1));
-
         evaluationResults();
     }
 
