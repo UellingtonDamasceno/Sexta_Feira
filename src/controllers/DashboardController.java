@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,9 +21,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import model.bean.Result;
@@ -37,55 +41,53 @@ import weka.core.Instance;
  */
 public class DashboardController implements Initializable {
 
-    @FXML
-    private TextArea txtAreaInfoHero;
-    @FXML
-    private VBox vboxContent;
-    @FXML
-    private TextArea txtAreaInfoSelectedHero;
-    @FXML
-    private TableColumn<Result, String> tcHero;
-    @FXML
-    private TableColumn<Result, Double> tcSimilarity;
-    @FXML
-    private TextField txtGetHero;
-    @FXML
-    private TextField txtAcCharacteristc;
-    @FXML
-    private ComboBox<Algorithms> comboBoxAlgorithms;
-    @FXML
-    private TableView<Result> tableResultado;
-    @FXML
-    private Slider slider;
-    private Label value;
-    @FXML
-    private Button add;
-    @FXML
-    private Button calculate;
+    @FXML   private VBox vboxContent;
+    @FXML   private TableColumn<Result, String> tcHero;
+    @FXML   private TableColumn<Result, Double> tcSimilarity;
+    @FXML   private TextField txtGetHero;
+    @FXML   private TextField txtAcCharacteristc;
+    @FXML   private ComboBox<Algorithms> comboBoxAlgorithms;
+    @FXML   private TableView<Result> tableResultado;
+    @FXML   private Slider slider;
+    @FXML   private TextField txtResultsNumber;
+
+    @FXML   private Button add;
+    @FXML   private Button calculate;
 
     private FacadeFrontEnd facade;
     private FacadeBackend facadeb;
 
     String[] heroes;
     String[] superPower;
-    @FXML
-    private TextField txtResultsNumber;
 
-    /**
-     * Initializes the controller class.
-     */
+    @FXML   private Label labelInfos;
+    
+    @FXML   private Label selectedCName;
+    @FXML   private Label selectedCCha;
+
+
+   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.facadeb = FacadeBackend.getInstance();
 
         heroes = facadeb.getPossibleCharacterSuggestions();
         superPower = facadeb.getPossibleSuperPowerSuggestions();
+        
+        
 
         initComboBox();
         initTextFieldsAC();
-
+        bindTextField();
+        textAreaEmpty();
+        textCHSelectedEmpty();
+       
         add.setDisable(true);
         calculate.setDisable(true);
+    }
+    
+    private void bindTextField(){
+        txtResultsNumber.textProperty().bind(Bindings.format("%.0f" , slider.valueProperty()));
     }
 
     @FXML
@@ -94,14 +96,6 @@ public class DashboardController implements Initializable {
 //        vboxContent.getChildren().add(getCaracteristic(characteristic));
     }
 
-    @FXML
-    private void showInfoCompare(ActionEvent event) {
-    }
-
-    @FXML
-    private void changeTheValue(MouseEvent event) {
-//        value.setText(String.valueOf((int) slider.getValue()));
-    }
 
     private void initComboBox() {
         ObservableList<Algorithms> ol = facadeb.getAlgorithmsPossibilities();
@@ -113,60 +107,129 @@ public class DashboardController implements Initializable {
         TextFields.bindAutoCompletion(txtAcCharacteristc, superPower);
     }
 
-    private void initTable(List<Result> results) {
-
-        tcHero.setCellValueFactory(new PropertyValueFactory<>("characterName"));
+    
+    private void initTable(List<Result> results){
+        
+        tcHero.setCellValueFactory(new PropertyValueFactory<>("characterName"));             
         tcSimilarity.setCellValueFactory(new PropertyValueFactory<>("similarity"));
-
+    
         tableResultado.getItems().setAll(results);
     }
 
     @FXML
     private void calculate(ActionEvent event) {
-
+        textCHSelectedEmpty();        
         List<Result> generatedList;
-        try {
-            generatedList = facadeb.calculateDistances(txtGetHero.getText(), comboBoxAlgorithms.getValue());
-            ObservableList<Result> generated = FXCollections.observableArrayList(generatedList);
-            initTable(generatedList);
-            if (generated != null) {
-                tableResultado.setItems(generated);
-            }
-        } catch (IOException | CharacterNotFoundException ex) {
-            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        //Tem que mudar o termo genérico ( ? ) tanto do observable quanto da tableView
-        //Indicação:
-        //Fazer uma classe Results com um obj e um Double score
-        /*
-         //Como transformar os objetos Results em ObservableList:
-         //pode ser criada com qualquer lista
-         public ObervableList<Results> getResults(){
-         ArrayList<Results> results = new ArrayList();
-         // adicione os objetos a esse array de resultados
-         return  FXColections.observableArrayList(results);
+         try {
+             generatedList = facadeb.calculateDistances(txtGetHero.getText(), comboBoxAlgorithms.getValue());
+             ObservableList<Result> generated = FXCollections.observableArrayList(generatedList);
+             initTable(generatedList);
+             if(generated != null){
+                  tableResultado.setItems(generated);
+             }
+         } catch (IOException | CharacterNotFoundException ex) {
+             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
          }
-         => e ta pronto o sorvetinho
-
-         =>Esse método também equivale para o ComboBOx
-         */
-        //ObservableList<Results> generatedList = facade.calculate();
-        //Mudar lá em cima para:
-        //    @FXML   private TableView<Results> tableResultado;
     }
 
     @FXML
     private void loadCharacter(ActionEvent event) {
         Instance character;
+        textAreaEmpty();
+        textCHSelectedEmpty();
         try {
             character = facadeb.getCharacter(txtGetHero.getText());
-            txtAreaInfoHero.setText(character.toString());
+            System.out.println("load");
+            setLabel(character, labelInfos);
+            
+           // txtAreaInfoHero.setText(character.toString());
             add.setDisable(false);
             calculate.setDisable(false);
 
         } catch (CharacterNotFoundException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void txfEnterCalculationValue(KeyEvent event) {
+            final KeyCombination ENTER = new KeyCodeCombination(KeyCode.ENTER);
+            try{
+                int number = Integer.parseInt(txtResultsNumber.getText());
+                if(ENTER.match(event) && number > 0){
+                    slider.setValue(number);
+                }
+            }catch(NumberFormatException e){ }
+            txtResultsNumber.textProperty().bind(Bindings.format("%.0f" , slider.valueProperty()));
+    }
+
+    private void stopBind(MouseEvent event) {
+        txtResultsNumber.disableProperty();
+    }
+    
+    private void textAreaEmpty() {
+        labelInfos.setVisible(false);
+    }
+    
+    private void textCHSelectedEmpty(){
+        selectedCName.setVisible(false);
+        selectedCCha.setVisible(false);        
+    }
+
+    private void setLabel(Instance character, Label label) {
+        //74,Beast,Male,blue,Mutant,Blue,180,'Marvel Comics',blue,good,181
+        String[] values = character.toString().split(",");
+        String all = "";
+        for (int i = 2; i <= 10; i++) {
+            if(!values[i].equals("-") || !values[i].equals("-99")){
+                all = all + getAtribute(i) + values[i].replaceAll("'", "") + "\n";
+            }
+        }
+        label.setText(all);
+        label.setVisible(true);
+    }
+    
+    
+    private String getAtribute(int a){
+        switch (a){
+            case 0:
+                return "Index: ";
+            case 1:
+                return "Name: ";
+            case 2:
+                return "Gender: ";
+            case 3:
+                return "Eye Color: ";            
+            case 4:
+                return "Race: ";
+            case 5:
+                return "Hair color: ";
+            case 6:
+                return "Height: ";
+            case 7:
+                return "Publiher: ";        
+            case 8:
+                return "Skin Color: ";
+            case 9:
+                return "Alignment: ";
+            case 10:
+                return "Weight: ";      
+            default:
+                break;
+        }
+        return null;
+    }
+
+    @SuppressWarnings("empty-statement")
+    private void selectACHFromTable(MouseEvent event) {
+        String Ch = tableResultado.getSelectionModel().getSelectedItem().getCharacterName();
+        if(Ch != null){
+            try {
+                selectedCName.setText(Ch);
+                selectedCName.setVisible(true);
+                Instance character = facadeb.getCharacter(Ch);
+                setLabel(character, selectedCCha);
+                selectedCCha.setVisible(true);
+            } catch (CharacterNotFoundException ex) {}
         }
     }
 
