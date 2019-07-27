@@ -18,7 +18,7 @@ public class SextaFeira extends Application {
     public void start(Stage primaryStage) {
 
         try {
-            //FacadeBackend.getInstance().initialize();
+            FacadeBackend.getInstance().initialize();
             FacadeFrontEnd.getInstance().initialize(primaryStage, Scenes.DASHBOARD);
         } catch (Exception ex) {
             Logger.getLogger(SextaFeira.class.getName()).log(Level.SEVERE, null, ex);

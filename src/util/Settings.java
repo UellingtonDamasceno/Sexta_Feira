@@ -7,7 +7,6 @@ package util;
 public class Settings {
 
     public enum Algorithms {
-
         JACCARD_COEFFICIENT,
         SMC,
         DICE;

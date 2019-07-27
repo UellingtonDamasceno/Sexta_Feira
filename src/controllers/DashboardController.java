@@ -2,7 +2,6 @@ package controllers;
 
 import exceptions.CharacterNotFoundException;
 import facades.FacadeBackend;
-import facades.FacadeFrontEnd;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -41,53 +40,45 @@ import weka.core.Instance;
  */
 public class DashboardController implements Initializable {
 
-    @FXML   private VBox vboxContent;
-    @FXML   private TableColumn<Result, String> tcHero;
-    @FXML   private TableColumn<Result, Double> tcSimilarity;
-    @FXML   private TextField txtGetHero;
-    @FXML   private TextField txtAcCharacteristc;
-    @FXML   private ComboBox<Algorithms> comboBoxAlgorithms;
-    @FXML   private TableView<Result> tableResultado;
-    @FXML   private Slider slider;
-    @FXML   private TextField txtResultsNumber;
+    @FXML    private VBox vboxContent;
+    @FXML    private TableColumn<Result, String> tcHero;
+    @FXML    private TableColumn<Result, Double> tcSimilarity;
+    @FXML    private TextField txtGetHero;
+    @FXML    private TextField txtAcCharacteristc;
+    @FXML    private ComboBox<Algorithms> comboBoxAlgorithms;
+    @FXML    private TableView<Result> tableResultado;
+    @FXML    private Slider slider;
+    @FXML    private TextField txtResultsNumber;
+    @FXML    private Button add;
+    @FXML    private Button calculate;
+    @FXML    private Label labelInfos;
 
-    @FXML   private Button add;
-    @FXML   private Button calculate;
+    @FXML    private Label selectedCName;
+    @FXML    private Label selectedCCha;
 
-    private FacadeFrontEnd facade;
     private FacadeBackend facadeb;
+    private String[] heroes;
+    private String[] superPower;
 
-    String[] heroes;
-    String[] superPower;
-
-    @FXML   private Label labelInfos;
-    
-    @FXML   private Label selectedCName;
-    @FXML   private Label selectedCCha;
-
-
-   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.facadeb = FacadeBackend.getInstance();
 
         heroes = facadeb.getPossibleCharacterSuggestions();
         superPower = facadeb.getPossibleSuperPowerSuggestions();
-        
-        
 
         initComboBox();
         initTextFieldsAC();
         bindTextField();
         textAreaEmpty();
         textCHSelectedEmpty();
-       
+
         add.setDisable(true);
         calculate.setDisable(true);
     }
-    
-    private void bindTextField(){
-        txtResultsNumber.textProperty().bind(Bindings.format("%.0f" , slider.valueProperty()));
+
+    private void bindTextField() {
+        txtResultsNumber.textProperty().bind(Bindings.format("%.0f", slider.valueProperty()));
     }
 
     @FXML
@@ -95,7 +86,6 @@ public class DashboardController implements Initializable {
         String characteristic = txtAcCharacteristc.getText();
 //        vboxContent.getChildren().add(getCaracteristic(characteristic));
     }
-
 
     private void initComboBox() {
         ObservableList<Algorithms> ol = facadeb.getAlgorithmsPossibilities();
@@ -107,29 +97,26 @@ public class DashboardController implements Initializable {
         TextFields.bindAutoCompletion(txtAcCharacteristc, superPower);
     }
 
-    
-    private void initTable(List<Result> results){
-        
-        tcHero.setCellValueFactory(new PropertyValueFactory<>("characterName"));             
+    private void initTable(List<Result> results) {
+        tcHero.setCellValueFactory(new PropertyValueFactory<>("characterName"));
         tcSimilarity.setCellValueFactory(new PropertyValueFactory<>("similarity"));
-    
         tableResultado.getItems().setAll(results);
     }
 
     @FXML
     private void calculate(ActionEvent event) {
-        textCHSelectedEmpty();        
+        textCHSelectedEmpty();
         List<Result> generatedList;
-         try {
-             generatedList = facadeb.calculateDistances(txtGetHero.getText(), comboBoxAlgorithms.getValue());
-             ObservableList<Result> generated = FXCollections.observableArrayList(generatedList);
-             initTable(generatedList);
-             if(generated != null){
-                  tableResultado.setItems(generated);
-             }
-         } catch (IOException | CharacterNotFoundException ex) {
-             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
-         }
+        try {
+            generatedList = facadeb.calculateDistances(txtGetHero.getText(), comboBoxAlgorithms.getValue());
+            ObservableList<Result> generated = FXCollections.observableArrayList(generatedList);
+            initTable(generated);
+            if (generated != null) {
+                tableResultado.setItems(generated);
+            }
+        } catch (IOException | CharacterNotFoundException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -141,8 +128,8 @@ public class DashboardController implements Initializable {
             character = facadeb.getCharacter(txtGetHero.getText());
             System.out.println("load");
             setLabel(character, labelInfos);
-            
-           // txtAreaInfoHero.setText(character.toString());
+
+            // txtAreaInfoHero.setText(character.toString());
             add.setDisable(false);
             calculate.setDisable(false);
 
@@ -152,27 +139,28 @@ public class DashboardController implements Initializable {
     }
 
     private void txfEnterCalculationValue(KeyEvent event) {
-            final KeyCombination ENTER = new KeyCodeCombination(KeyCode.ENTER);
-            try{
-                int number = Integer.parseInt(txtResultsNumber.getText());
-                if(ENTER.match(event) && number > 0){
-                    slider.setValue(number);
-                }
-            }catch(NumberFormatException e){ }
-            txtResultsNumber.textProperty().bind(Bindings.format("%.0f" , slider.valueProperty()));
+        final KeyCombination ENTER = new KeyCodeCombination(KeyCode.ENTER);
+        try {
+            int number = Integer.parseInt(txtResultsNumber.getText());
+            if (ENTER.match(event) && number > 0) {
+                slider.setValue(number);
+            }
+        } catch (NumberFormatException e) {
+        }
+        txtResultsNumber.textProperty().bind(Bindings.format("%.0f", slider.valueProperty()));
     }
 
     private void stopBind(MouseEvent event) {
         txtResultsNumber.disableProperty();
     }
-    
+
     private void textAreaEmpty() {
         labelInfos.setVisible(false);
     }
-    
-    private void textCHSelectedEmpty(){
+
+    private void textCHSelectedEmpty() {
         selectedCName.setVisible(false);
-        selectedCCha.setVisible(false);        
+        selectedCCha.setVisible(false);
     }
 
     private void setLabel(Instance character, Label label) {
@@ -180,17 +168,16 @@ public class DashboardController implements Initializable {
         String[] values = character.toString().split(",");
         String all = "";
         for (int i = 2; i <= 10; i++) {
-            if(!values[i].equals("-") || !values[i].equals("-99")){
+            if (!values[i].equals("-") || !values[i].equals("-99")) {
                 all = all + getAtribute(i) + values[i].replaceAll("'", "") + "\n";
             }
         }
         label.setText(all);
         label.setVisible(true);
     }
-    
-    
-    private String getAtribute(int a){
-        switch (a){
+
+    private String getAtribute(int a) {
+        switch (a) {
             case 0:
                 return "Index: ";
             case 1:
@@ -198,7 +185,7 @@ public class DashboardController implements Initializable {
             case 2:
                 return "Gender: ";
             case 3:
-                return "Eye Color: ";            
+                return "Eye Color: ";
             case 4:
                 return "Race: ";
             case 5:
@@ -206,13 +193,13 @@ public class DashboardController implements Initializable {
             case 6:
                 return "Height: ";
             case 7:
-                return "Publiher: ";        
+                return "Publiher: ";
             case 8:
                 return "Skin Color: ";
             case 9:
                 return "Alignment: ";
             case 10:
-                return "Weight: ";      
+                return "Weight: ";
             default:
                 break;
         }
@@ -222,14 +209,15 @@ public class DashboardController implements Initializable {
     @SuppressWarnings("empty-statement")
     private void selectACHFromTable(MouseEvent event) {
         String Ch = tableResultado.getSelectionModel().getSelectedItem().getCharacterName();
-        if(Ch != null){
+        if (Ch != null) {
             try {
                 selectedCName.setText(Ch);
                 selectedCName.setVisible(true);
                 Instance character = facadeb.getCharacter(Ch);
                 setLabel(character, selectedCCha);
                 selectedCCha.setVisible(true);
-            } catch (CharacterNotFoundException ex) {}
+            } catch (CharacterNotFoundException ex) {
+            }
         }
     }
 
