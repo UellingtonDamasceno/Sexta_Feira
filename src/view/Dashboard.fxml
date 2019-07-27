@@ -22,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="630.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController">
+<AnchorPane id="AnchorPane" prefHeight="630.0" prefWidth="986.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController">
    <children>
       <Separator layoutX="352.0" orientation="VERTICAL" prefHeight="609.0" prefWidth="8.0" AnchorPane.leftAnchor="350.0" />
       <Separator layoutX="682.0" orientation="VERTICAL" prefHeight="609.0" prefWidth="0.0" AnchorPane.leftAnchor="700.0" />
@@ -32,18 +32,13 @@
           <TableColumn fx:id="tcSimilarity" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Score" />
         </columns>
       </TableView>
-      <TextArea fx:id="txtAreaInfoHero" disable="true" editable="false" layoutX="14.0" layoutY="60.0" prefHeight="180.0" prefWidth="320.0" promptText="INFORMAÇÕES DO HEROI">
-      </TextArea>
       <ScrollPane fitToWidth="true" layoutX="14.0" layoutY="288.0" prefHeight="198.0" prefWidth="320.0">
          <content>
             <VBox fx:id="vboxContent" alignment="TOP_CENTER" disable="true" prefHeight="192.0" prefWidth="318.0" />
          </content>
       </ScrollPane>
-      <TextArea fx:id="txtAreaInfoSelectedHero" editable="false" layoutX="706.0" layoutY="14.0" prefHeight="295.0" prefWidth="240.0">
-      </TextArea>
-      <Button layoutX="706.0" layoutY="341.0" mnemonicParsing="false" onAction="#showInfoCompare" prefHeight="40.0" prefWidth="240.0" text="-Vs-" />
       <ComboBox fx:id="comboBoxAlgorithms" layoutX="14.0" layoutY="498.0" prefHeight="29.0" prefWidth="320.0" promptText="MEDIDA DE ANÁLISE" />
-      <Slider fx:id="slider" layoutX="14.0" layoutY="567.0" majorTickUnit="349.0" max="700.0" min="1.0" minorTickCount="1" onDragDetected="#changeTheValue" prefHeight="14.0" prefWidth="320.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Slider fx:id="slider" layoutX="14.0" layoutY="567.0" majorTickUnit="1.0" max="700.0" min="1.0" minorTickCount="1" prefHeight="14.0" prefWidth="320.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
       <Label layoutX="14.0" layoutY="4.0" text="Buscar um personagem:">
          <font>
             <Font size="14.0" />
@@ -73,5 +68,16 @@
             <Button mnemonicParsing="false" onAction="#loadCharacter" prefHeight="25.0" prefWidth="35.0" text="OK" />
          </children>
       </HBox>
+      <Label fx:id="labelInfos" layoutX="14.0" layoutY="59.0" text="Label" />
+      <VBox layoutX="726.0" layoutY="24.0" prefHeight="200.0" prefWidth="238.0">
+         <children>
+            <Label fx:id="selectedCName" alignment="CENTER" prefHeight="17.0" prefWidth="304.0" text="Label">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="selectedCCha" text="Label" />
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
