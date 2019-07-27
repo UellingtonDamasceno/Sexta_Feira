@@ -15,15 +15,15 @@ public class DataProcessingController {
     public List<String[]> standardizeValues(List<String> contentFile, DatasetId fileType) {
         List<String[]> contentFilePreProcessed = replaceEmpatyValues(contentFile);
         StandardValues standardNumber;
-        
-        if(fileType == DatasetId.HEROES){
-            contentFilePreProcessed =  standardizeValuesHeroFile(contentFilePreProcessed);
+
+        if (fileType == DatasetId.HEROES) {
+            contentFilePreProcessed = standardizeValuesHeroFile(contentFilePreProcessed);
             standardNumber = StandardValues.NUMBER_ATTRIBUTE_HERO;
-        }else{
-            contentFilePreProcessed = replaceBinariesValues(contentFilePreProcessed);
+        } else {
+            //contentFilePreProcessed = replaceBinariesValues(contentFilePreProcessed);
             standardNumber = StandardValues.NUMBER_ATTRIBUTE_SUPER_POWER;
         }
-  
+
         return standardization(contentFilePreProcessed, standardNumber);
     }
 
@@ -34,8 +34,8 @@ public class DataProcessingController {
                 line[i] = (line[i].equalsIgnoreCase("true"))
                         ? FileSettings.TRUE.getValue()
                         : (line[i].equalsIgnoreCase("false"))
-                        ? FileSettings.FALSE.getValue()
-                        : line[i];
+                                ? FileSettings.FALSE.getValue()
+                                : line[i];
             }
         });
         return contentFile;

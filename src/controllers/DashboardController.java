@@ -41,19 +41,31 @@ import weka.core.Instance;
  */
 public class DashboardController implements Initializable {
 
-    @FXML   private TextArea txtAreaInfoHero;
-    @FXML   private VBox vboxContent;
-    @FXML   private TextArea txtAreaInfoSelectedHero;
-    @FXML   private TableColumn<Result, String> tcHero;
-    @FXML   private TableColumn<Result, Double> tcSimilarity;
-    @FXML   private TextField txtGetHero;
-    @FXML   private TextField txtAcCharacteristc;
-    @FXML   private ComboBox<Algorithms> comboBoxAlgorithms;
-    @FXML   private TableView<Result> tableResultado;
-    @FXML   private Slider slider;
+    @FXML
+    private TextArea txtAreaInfoHero;
+    @FXML
+    private VBox vboxContent;
+    @FXML
+    private TextArea txtAreaInfoSelectedHero;
+    @FXML
+    private TableColumn<Result, String> tcHero;
+    @FXML
+    private TableColumn<Result, Double> tcSimilarity;
+    @FXML
+    private TextField txtGetHero;
+    @FXML
+    private TextField txtAcCharacteristc;
+    @FXML
+    private ComboBox<Algorithms> comboBoxAlgorithms;
+    @FXML
+    private TableView<Result> tableResultado;
+    @FXML
+    private Slider slider;
     private Label value;
-    @FXML   private Button add;
-    @FXML   private Button calculate;
+    @FXML
+    private Button add;
+    @FXML
+    private Button calculate;
 
     private FacadeFrontEnd facade;
     private FacadeBackend facadeb;
@@ -68,14 +80,18 @@ public class DashboardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.facadeb = FacadeBackend.getInstance();
+        try {
+            this.facadeb = FacadeBackend.getInstance();
+        } catch (Exception ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         heroes = facadeb.getPossibleCharacterSuggestions();
         superPower = facadeb.getPossibleSuperPowerSuggestions();
 
         initComboBox();
         initTextFieldsAC();
-       
+
         add.setDisable(true);
         calculate.setDisable(true);
     }
@@ -105,46 +121,43 @@ public class DashboardController implements Initializable {
         TextFields.bindAutoCompletion(txtAcCharacteristc, superPower);
     }
 
-    
-    private void initTable(List<Result> results){
-        
-        tcHero.setCellValueFactory(new PropertyValueFactory<>("characterName"));             
+    private void initTable(List<Result> results) {
+
+        tcHero.setCellValueFactory(new PropertyValueFactory<>("characterName"));
         tcSimilarity.setCellValueFactory(new PropertyValueFactory<>("similarity"));
-    
+
         tableResultado.getItems().setAll(results);
     }
 
     @FXML
     private void calculate(ActionEvent event) {
-        
-       List<Result> generatedList;
+
+        List<Result> generatedList;
         try {
             generatedList = facadeb.calculateDistances(txtGetHero.getText(), comboBoxAlgorithms.getValue());
             ObservableList<Result> generated = FXCollections.observableArrayList(generatedList);
             initTable(generatedList);
-            if(generated != null){
-                 tableResultado.setItems(generated);
+            if (generated != null) {
+                tableResultado.setItems(generated);
             }
         } catch (IOException | CharacterNotFoundException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
-         
         //Tem que mudar o termo genérico ( ? ) tanto do observable quanto da tableView
         //Indicação:
         //Fazer uma classe Results com um obj e um Double score
         /*
-        //Como transformar os objetos Results em ObservableList:
-        //pode ser criada com qualquer lista
-        public ObervableList<Results> getResults(){
-            ArrayList<Results> results = new ArrayList();
-            // adicione os objetos a esse array de resultados
-            return  FXColections.observableArrayList(results);
-        }
-        => e ta pronto o sorvetinho
-        
-        =>Esse método também equivale para o ComboBOx
+         //Como transformar os objetos Results em ObservableList:
+         //pode ser criada com qualquer lista
+         public ObervableList<Results> getResults(){
+         ArrayList<Results> results = new ArrayList();
+         // adicione os objetos a esse array de resultados
+         return  FXColections.observableArrayList(results);
+         }
+         => e ta pronto o sorvetinho
+
+         =>Esse método também equivale para o ComboBOx
          */
         //ObservableList<Results> generatedList = facade.calculate();
         //Mudar lá em cima para:

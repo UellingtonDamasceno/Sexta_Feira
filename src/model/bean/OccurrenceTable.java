@@ -24,10 +24,18 @@ public class OccurrenceTable {
 
     public void addInPosition(String value) {
         switch (value) {
-            case "00": this.d++; break;
-            case "01": this.b++; break;
-            case "10": this.c++; break;
-            case "11": this.a++; break;
+            case "FF":
+                this.d++;
+                break;
+            case "FT":
+                this.b++;
+                break;
+            case "TF":
+                this.c++;
+                break;
+            case "TT":
+                this.a++;
+                break;
         }
     }
 
@@ -46,7 +54,7 @@ public class OccurrenceTable {
     public int getD() {
         return d;
     }
-    
+
     @Override
     public String toString() {
         return "A: ".concat(a.toString())
