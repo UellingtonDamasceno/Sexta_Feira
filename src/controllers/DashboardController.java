@@ -24,6 +24,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -79,10 +80,13 @@ public class DashboardController implements Initializable {
     @FXML   private ComboBox<String> analisysTypeCombB;
     @FXML   private VBox predictionContainer;
     @FXML   private HBox similarityContainer;
-    
 
     @FXML   private Button go;
     @FXML   private TextField preChar;
+    
+    @FXML   private VBox infoCh2Container;
+    @FXML   private ImageView imgCh2;
+    @FXML   private ImageView imgCh1;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -99,10 +103,19 @@ public class DashboardController implements Initializable {
         textAreaEmpty();
         textCHSelectedEmpty();
         vbMatch.setVisible(false);
-
+        setContainetOff();
+  
         go.setDisable(true);
         disableBtnCalculate();
     }
+    
+    private void setContainetOn(){
+        infoCh2Container.setVisible(true);
+    }
+    private void setContainetOff(){
+        infoCh2Container.setVisible(false);
+    }    
+    
 
     private void bindTextField() {
         txtResultsNumber.textProperty().bind(Bindings.format("%.0f", slider.valueProperty()));
@@ -257,6 +270,7 @@ public class DashboardController implements Initializable {
     @SuppressWarnings("empty-statement")
     @FXML
     private void selectACHFromTable(MouseEvent event) {
+        setContainetOff();
         vbMatch.setVisible(false);
         selectedCName.setVisible(false);
         String Ch = null;
@@ -268,6 +282,7 @@ public class DashboardController implements Initializable {
 
         if (Ch != null) {
             try {
+                setContainetOn();
                 selectedCName.setText(Ch);
                 selectedCName.setVisible(true);
                 Instance character = facadeb.getCharacterByName(Ch);
