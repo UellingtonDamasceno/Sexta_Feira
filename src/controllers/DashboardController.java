@@ -161,6 +161,7 @@ public class DashboardController implements Initializable {
         try {
             generatedList = facadeb.calculateDistances(txtGetHero.getText(), comboBoxAlgorithms.getValue());
             ObservableList<Result> generated = FXCollections.observableArrayList(generatedList.subList(0, ((int)slider.getValue())));
+            
             initTableCalculate(generated);
             if (generated != null) {
                 tableResultado.setItems(generated);
@@ -300,13 +301,13 @@ public class DashboardController implements Initializable {
             String[] splitCh2 = b.toString().split(",");
             for (int i = 11; i < splitCh1.length; i++) {
                 if(splitCh1[i].equals("True") && splitCh2[i].equals("True")){
-                    m += superPower[i-10] + "\n";
+                    m = m.concat(superPower[i-10] + "\n");
                 }
-                if(splitCh1[i].equals("True") && splitCh2[i].equals("False")){
-                    oc1 += superPower[i-10] + "\n";
+                else if(splitCh1[i].equals("True") && splitCh2[i].equals("False")){
+                    oc1 = oc1.concat(superPower[i-10] + "\n");
                 }
-                if(splitCh1[i].equals("False") && splitCh2[i].equals("True")){
-                    oc2 += superPower[i-10] + "\n";
+                else if(splitCh1[i].equals("False") && splitCh2[i].equals("True")){
+                    oc2 = oc2.concat(superPower[i-10] + "\n");
                 }                
             }
             onlyCH1.setText(oc1);

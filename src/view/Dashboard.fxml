@@ -82,7 +82,7 @@
                            <content>
                               <VBox prefHeight="63.0" prefWidth="303.0">
                                  <children>
-                                    <Label fx:id="onlyCH1" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="306.0" text="Label" />
+                                    <Label fx:id="onlyCH1" alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="63.0" prefWidth="303.0" text="Label" textAlignment="CENTER" />
                                  </children>
                               </VBox>
                            </content>
@@ -101,7 +101,7 @@
                            <content>
                               <VBox prefHeight="128.0" prefWidth="304.0">
                                  <children>
-                                    <Label fx:id="matchChs" alignment="CENTER" prefHeight="17.0" prefWidth="305.0" text="Label" />
+                                    <Label fx:id="matchChs" alignment="TOP_CENTER" prefHeight="131.0" prefWidth="304.0" text="Label" textAlignment="CENTER" />
                                  </children>
                               </VBox>
                            </content>
@@ -116,7 +116,7 @@
                            <content>
                               <VBox prefHeight="71.0" prefWidth="304.0">
                                  <children>
-                                    <Label fx:id="onlyCh2" alignment="CENTER" prefHeight="17.0" prefWidth="304.0" text="Label" />
+                                    <Label fx:id="onlyCh2" alignment="TOP_CENTER" prefHeight="77.0" prefWidth="304.0" text="Label" textAlignment="CENTER" />
                                  </children>
                               </VBox>
                            </content>
