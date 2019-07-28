@@ -29,13 +29,13 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.bean.Dice;
 import model.bean.Jaccard;
 import model.bean.Result;
 import model.bean.SMC;
 import org.controlsfx.control.textfield.TextFields;
-import util.Algorithm;
 import util.Settings.Algorithms;
 import weka.core.Instance;
 
@@ -46,7 +46,6 @@ import weka.core.Instance;
  */
 public class DashboardController implements Initializable {
 
-    @FXML    private VBox vboxContent;
     @FXML    private TableColumn<Result, String> tcHero;
     @FXML    private TableColumn<Result, String> tcSimilarity;
     @FXML    private TextField txtGetHero;
@@ -55,7 +54,6 @@ public class DashboardController implements Initializable {
     @FXML    private TableView<Result> tableResultado;
     @FXML    private Slider slider;
     @FXML    private TextField txtResultsNumber;
-    @FXML    private Button add;
     @FXML    private Button calculate;
     @FXML    private Label labelInfos;
 
@@ -72,10 +70,19 @@ public class DashboardController implements Initializable {
     
     @FXML   private VBox vbMatch;
     @FXML   private Label char1;
+    @FXML   private Label char2;
+    
     @FXML   private Label onlyCH1;
     @FXML   private Label matchChs;
-    @FXML   private Label char2;
     @FXML   private Label onlyCh2;
+    
+    @FXML   private ComboBox<String> analisysTypeCombB;
+    @FXML   private VBox predictionContainer;
+    @FXML   private HBox similarityContainer;
+    
+
+    @FXML   private Button go;
+    @FXML   private TextField preChar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -85,43 +92,67 @@ public class DashboardController implements Initializable {
         heroes = facadeb.getPossibleCharacterSuggestions();
         superPower = facadeb.getPossibleSuperPowerSuggestions();
 
-        initComboBox();
+        initComboBoxAlgo();
+        initComboBoxType();
         initTextFieldsAC();
         bindTextField();
         textAreaEmpty();
         textCHSelectedEmpty();
         vbMatch.setVisible(false);
 
-        add.setDisable(true);
-        calculate.setDisable(true);
+        go.setDisable(true);
+        disableBtnCalculate();
     }
 
     private void bindTextField() {
         txtResultsNumber.textProperty().bind(Bindings.format("%.0f", slider.valueProperty()));
     }
 
-    @FXML
-    private void addNewCharacteristc(ActionEvent event) {
-        String characteristic = txtAcCharacteristc.getText();
-//        vboxContent.getChildren().add(getCaracteristic(characteristic));
+    private void disableBtnCalculate(){
+        calculate.setDisable(true);
     }
-
-    private void initComboBox() {
+    
+    private void ableBtnCalculate(){
+        calculate.setDisable(false);
+    }
+    private void initComboBoxAlgo() {
         ObservableList<Algorithms> ol = facadeb.getAlgorithmsPossibilities();
         comboBoxAlgorithms.setItems(ol);
+        clearTypesContainers();
+    }
+    
+    private void clearTypesContainers(){
+        predictionContainer.setVisible(false);
+        similarityContainer.setVisible(false);        
+    }
+    
+    private void setSimilarityOn(){
+        predictionContainer.setVisible(false);
+        similarityContainer.setVisible(true);         
     }
 
+    private void setPredictionOn(){
+        predictionContainer.setVisible(true);
+        similarityContainer.setVisible(false);         
+    }    
+
+    private void initComboBoxType() {
+        ObservableList<String> ol = FXCollections.observableArrayList();
+        ol.addAll("Predição", "similaridade");
+        analisysTypeCombB.setItems(ol);
+    }
+    
     private void initTextFieldsAC() {
         TextFields.bindAutoCompletion(txtGetHero, heroes);
         TextFields.bindAutoCompletion(txtAcCharacteristc, superPower);
     }
 
-    private void initTable(List<Result> results) {
+    private void initTableCalculate(List<Result> results) {
         tcHero.setCellValueFactory(new PropertyValueFactory<>("characterName"));
         tcSimilarity.setCellValueFactory(new PropertyValueFactory<>("strSimilarity"));
         tableResultado.getSortOrder().setAll(tcSimilarity);
         tableResultado.getItems().setAll(results);
-    }
+    }  
     
     @FXML
     private void calculate(ActionEvent event) {
@@ -129,8 +160,8 @@ public class DashboardController implements Initializable {
         List<Result> generatedList;
         try {
             generatedList = facadeb.calculateDistances(txtGetHero.getText(), comboBoxAlgorithms.getValue());
-            ObservableList<Result> generated = FXCollections.observableArrayList(generatedList.subList(0, ((int)slider.getValue() - 1)));
-            initTable(generated);
+            ObservableList<Result> generated = FXCollections.observableArrayList(generatedList.subList(0, ((int)slider.getValue())));
+            initTableCalculate(generated);
             if (generated != null) {
                 tableResultado.setItems(generated);
             }
@@ -147,7 +178,7 @@ public class DashboardController implements Initializable {
         try {
             character = facadeb.getCharacterByName(txtGetHero.getText());
             setLabel(character, labelInfos, char1);
-            add.setDisable(false);
+            go.setDisable(false);
         } catch (CharacterNotFoundException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -162,7 +193,7 @@ public class DashboardController implements Initializable {
             }
         } catch (NumberFormatException e) {
         }
-        txtResultsNumber.textProperty().bind(Bindings.format("%.0f", slider.valueProperty()));
+        bindTextField();
     }
 
     private void stopBind(MouseEvent event) {
@@ -181,7 +212,7 @@ public class DashboardController implements Initializable {
     private void setLabel(Instance character, Label label, Label name) {
         String[] values = character.toString().split(",");
         String all = "";
-        name.setText(values[0]);
+        name.setText(values[1].replaceAll("'", ""));
         for (int i = 2; i <= 10; i++) {
             if (values[i].equals("-") || values[i].equals("-99")) {
                 values[i] = "Unknown";
@@ -227,7 +258,12 @@ public class DashboardController implements Initializable {
     private void selectACHFromTable(MouseEvent event) {
         vbMatch.setVisible(false);
         selectedCName.setVisible(false);
-        String Ch = tableResultado.getSelectionModel().getSelectedItem().getCharacterName();
+        String Ch = null;
+        try{
+            Ch = tableResultado.getSelectionModel().getSelectedItem().getCharacterName();
+        }catch(NullPointerException e){
+            
+        }    
 
         if (Ch != null) {
             try {
@@ -253,7 +289,7 @@ public class DashboardController implements Initializable {
     @FXML
     private void comboBoxAlgorithmsOnAction(ActionEvent event) {
         if(comboBoxAlgorithms.getValue() != null){
-            calculate.setDisable(false);
+            ableBtnCalculate();
             tooltipAlgorithm.setText(getAlgorithmDesc(comboBoxAlgorithms.getValue()));
         }         
     }
@@ -270,6 +306,31 @@ public class DashboardController implements Initializable {
                 return new SMC().getDescription();
             }
         }        
+    }
+
+    @FXML
+    private void comboBoxTypesOnAction(ActionEvent event) {
+        clearTypesContainers();
+        switch (analisysTypeCombB.getValue()) {
+            case "Predição":
+                disableBtnCalculate();
+                setPredictionOn();
+                break;
+            case "similaridade":
+                disableBtnCalculate();
+                setSimilarityOn();
+                break;
+            default:
+                disableBtnCalculate();
+                clearTypesContainers();
+                break;
+        }     
+    }
+
+    @FXML
+    private void predictPower(ActionEvent event) {
+        txtAcCharacteristc.getText();
+        preChar.setText("");
     }
 
 }

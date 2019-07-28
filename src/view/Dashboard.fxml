@@ -33,28 +33,12 @@
           <TableColumn fx:id="tcSimilarity" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Score" />
         </columns>
       </TableView>
-      <ScrollPane fitToWidth="true" layoutX="14.0" layoutY="288.0" prefHeight="198.0" prefWidth="320.0">
-         <content>
-            <VBox fx:id="vboxContent" alignment="TOP_CENTER" disable="true" prefHeight="192.0" prefWidth="318.0" />
-         </content>
-      </ScrollPane>
-      <ComboBox fx:id="comboBoxAlgorithms" layoutX="14.0" layoutY="498.0" onAction="#comboBoxAlgorithmsOnAction" prefHeight="29.0" prefWidth="291.0" promptText="MEDIDA DE ANÁLISE" />
-      <Slider fx:id="slider" layoutX="14.0" layoutY="567.0" majorTickUnit="1.0" max="700.0" min="1.0" minorTickCount="1" prefHeight="14.0" prefWidth="320.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Slider fx:id="slider" layoutX="14.0" layoutY="567.0" majorTickUnit="1.0" max="700.0" min="1.0" minorTickCount="1" prefHeight="14.0" prefWidth="320.0" snapToTicks="true" />
       <Label layoutX="14.0" layoutY="4.0" text="Buscar um personagem:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <HBox alignment="CENTER" layoutX="14.0" layoutY="241.0" prefHeight="47.0" prefWidth="320.0">
-         <children>
-            <TextField fx:id="txtAcCharacteristc" prefHeight="26.0" prefWidth="210.0" promptText="ADD NOVO SUPER PODER" />
-            <Pane prefHeight="47.0" prefWidth="20.0" />
-            <Button fx:id="add" mnemonicParsing="false" onAction="#addNewCharacteristc" prefHeight="32.0" prefWidth="74.0" text="ADD" />
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </HBox>
       <Button fx:id="calculate" layoutX="14.0" layoutY="598.0" mnemonicParsing="false" onAction="#calculate" prefHeight="25.0" prefWidth="320.0" text="CALCULAR" />
       <HBox alignment="CENTER" layoutX="14.0" layoutY="531.0" prefHeight="26.0" prefWidth="320.0">
          <children>
@@ -70,17 +54,9 @@
          </children>
       </HBox>
       <Label fx:id="labelInfos" layoutX="14.0" layoutY="59.0" text="Label" />
-      <Label alignment="CENTER" layoutX="314.0" layoutY="502.0" prefHeight="17.0" prefWidth="20.0" style="-fx-border-radius: 10; -fx-border-color: #616161;" text="?" textAlignment="CENTER">
-         <font>
-            <Font size="14.0" />
-         </font>
-         <tooltip>
-            <Tooltip fx:id="tooltipAlgorithm" text="Empty Tooltip" />
-         </tooltip>
-      </Label>
       <VBox layoutX="715.0" layoutY="14.0" prefHeight="609.0" prefWidth="306.0">
          <children>
-            <VBox prefHeight="146.0" prefWidth="306.0">
+            <VBox prefHeight="229.0" prefWidth="306.0">
                <children>
                   <Label fx:id="selectedCName" alignment="CENTER" prefHeight="17.0" prefWidth="304.0" text="Label">
                      <font>
@@ -91,9 +67,9 @@
                </children>
             </VBox>
             <Separator prefHeight="13.0" prefWidth="306.0" />
-            <VBox fx:id="vbMatch" prefHeight="454.0" prefWidth="306.0">
+            <VBox fx:id="vbMatch" prefHeight="454.0" prefWidth="306.0" style="-fx-background-color: #bababa; -fx-border-radius: 20;">
                <children>
-                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="306.0" style="-fx-background-color: #bababa; -fx-background-radius: 10;" text="Was it a MATCH??">
+                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="306.0" text="Was it a MATCH??">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -102,7 +78,7 @@
                   <VBox prefHeight="108.0" prefWidth="306.0" style="-fx-background-color: #e8e8e8; -fx-background-radius: 20;">
                      <children>
                         <Label fx:id="char1" alignment="CENTER" prefHeight="17.0" prefWidth="305.0" text="Label" />
-                        <ScrollPane prefHeight="73.0" prefWidth="306.0">
+                        <ScrollPane prefHeight="65.0" prefWidth="306.0">
                            <content>
                               <Pane prefHeight="59.0" prefWidth="277.0">
                                  <children>
@@ -121,9 +97,9 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <ScrollPane prefHeight="142.0" prefWidth="295.0">
+                        <ScrollPane prefHeight="137.0" prefWidth="306.0">
                            <content>
-                              <Pane prefHeight="137.0" prefWidth="200.0">
+                              <Pane prefHeight="120.0" prefWidth="200.0">
                                  <children>
                                     <Label fx:id="matchChs" layoutX="30.0" layoutY="14.0" text="Label" />
                                  </children>
@@ -136,9 +112,9 @@
                   <VBox prefHeight="121.0" prefWidth="306.0" style="-fx-background-color: #e8e8e8; -fx-background-radius: 20;">
                      <children>
                         <Label fx:id="char2" alignment="CENTER" prefHeight="17.0" prefWidth="307.0" text="Label" />
-                        <ScrollPane prefHeight="84.0" prefWidth="306.0">
+                        <ScrollPane prefHeight="78.0" prefWidth="306.0">
                            <content>
-                              <Pane prefHeight="81.0" prefWidth="200.0">
+                              <Pane prefHeight="65.0" prefWidth="200.0">
                                  <children>
                                     <Label fx:id="onlyCh2" layoutX="31.0" layoutY="14.0" text="Label" />
                                  </children>
@@ -151,5 +127,48 @@
             </VBox>
          </children>
       </VBox>
+      <ComboBox fx:id="analisysTypeCombB" layoutX="14.0" layoutY="229.0" onAction="#comboBoxTypesOnAction" prefHeight="25.0" prefWidth="320.0" promptText="Selecione o tipo de analise " />
+      <StackPane layoutX="14.0" layoutY="284.0" prefHeight="232.0" prefWidth="320.0">
+         <children>
+            <VBox fx:id="predictionContainer" prefHeight="215.0" prefWidth="320.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="47.0" prefWidth="320.0">
+                     <children>
+                        <TextField fx:id="txtAcCharacteristc" prefHeight="26.0" prefWidth="210.0" promptText="ADD NOVO SUPER PODER" />
+                        <Pane prefHeight="47.0" prefWidth="20.0" />
+                        <Button fx:id="go" mnemonicParsing="false" onAction="#predictPower" prefHeight="32.0" prefWidth="74.0" text="GO" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </HBox>
+                  <Separator prefHeight="8.0" prefWidth="320.0" />
+                  <ScrollPane fitToWidth="true" prefHeight="56.0" prefWidth="320.0">
+                     <content>
+                        <TextField fx:id="preChar" editable="false" prefHeight="47.0" prefWidth="318.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+            <HBox fx:id="similarityContainer" prefHeight="202.0" prefWidth="320.0">
+               <children>
+                  <ComboBox fx:id="comboBoxAlgorithms" onAction="#comboBoxAlgorithmsOnAction" prefHeight="29.0" prefWidth="291.0" promptText="MEDIDA DE ANÁLISE" />
+                  <Separator maxHeight="27.0" minHeight="7.0" orientation="VERTICAL" prefHeight="27.0" prefWidth="7.0" />
+                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="20.0" style="-fx-border-radius: 10; -fx-border-color: #616161;" text="?" textAlignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip fx:id="tooltipAlgorithm" text="Empty Tooltip" />
+                     </tooltip>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>
