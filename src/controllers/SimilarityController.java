@@ -6,6 +6,7 @@ import java.util.List;
 import model.bean.Result;
 import model.bean.OccurrenceTable;
 import util.Algorithm;
+import util.Settings.StandardValues;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -21,7 +22,7 @@ public class SimilarityController {
         dataset.forEach((Instance instance) -> {
             OccurrenceTable table = tableGenerator(referenceHero, instance);
             double similarity = algorithm.calculate(table);
-            relationship.add(new Result(instance.stringValue(0), similarity));
+            relationship.add(new Result(instance.stringValue(1), similarity));
         });
         return relationship;
     }
@@ -34,7 +35,8 @@ public class SimilarityController {
 
     private OccurrenceTable tableGenerator(Instance reference, Instance toCompare) {
         OccurrenceTable table = new OccurrenceTable();
-        for (int current = 1; current < reference.numAttributes(); current++) {
+        for (int current = StandardValues.NUMBER_ATTRIBUTE_HERO.getValue(); current < reference.numAttributes(); current++) {
+            //System.out.println(toCompare.stringValue(current));
             String relation = reference.stringValue(current).substring(0, 1);
             relation += toCompare.stringValue(current).charAt(0);
             table.addInPosition(relation);

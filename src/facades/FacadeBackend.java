@@ -6,7 +6,7 @@ import controllers.DataProcessingController;
 import controllers.DatasetController;
 import controllers.FileController;
 import controllers.SimilarityController;
-import controllers.PredictionController;
+//import controllers.PredictionController;
 import exceptions.ListIsEmpty;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -14,7 +14,6 @@ import java.util.List;
 import javafx.collections.ObservableList;
 import model.bean.Result;
 import util.Algorithm;
-import util.Settings;
 import util.Settings.Algorithms;
 import util.Settings.DatasetId;
 import util.Settings.Path;
@@ -34,7 +33,7 @@ public class FacadeBackend {
     private final FileController fileController;
     private final SimilarityController simmilarityController;
     private final AlgorithmController algorithmController;
-    private final PredictionController predictionController;
+  //  private final PredictionController predictionController;
     private static FacadeBackend facade;
 
     private FacadeBackend() {
@@ -43,7 +42,7 @@ public class FacadeBackend {
         this.fileController = new FileController();
         this.simmilarityController = new SimilarityController();
         this.algorithmController = new AlgorithmController();
-        this.predictionController = new PredictionController();
+    //    this.predictionController = new PredictionController();
 
     }
 
@@ -74,9 +73,9 @@ public class FacadeBackend {
     }
 
     public List<Result> calculateDistances(String name, Algorithms algorithmType) throws IOException, CharacterNotFoundException {
-        Instances superPowerDataset = datasetController.getDataset(DatasetId.SUPER_POWER);
+        Instances superPowerDataset = datasetController.getDataset(DatasetId.SUPER_POWER_MERGE_HERO);
         Algorithm algorithm = algorithmController.algorithmFactory(algorithmType);
-        Instance referenceHero = datasetController.getHeroByName(DatasetId.SUPER_POWER, 0, name);
+        Instance referenceHero = datasetController.getHeroByName(DatasetId.SUPER_POWER_MERGE_HERO, 1, name);
         return simmilarityController.calculateDistances(superPowerDataset, referenceHero, algorithm);
     }
 
@@ -85,7 +84,7 @@ public class FacadeBackend {
     }
 
     public Instance getCharacterByName(String name) throws CharacterNotFoundException {
-        return datasetController.getHeroByName(DatasetId.HEROES, 1, name);
+        return datasetController.getHeroByName(DatasetId.SUPER_POWER_MERGE_HERO, 1, name);
     }
 
     public String[] getPossibleCharacterSuggestions() {
@@ -98,7 +97,8 @@ public class FacadeBackend {
     
     
     public void treesTest() throws Exception{
-        LinkedList<J48> florest = predictionController.florest();
-        Instances dataset = datasetController.getDataset(DatasetId.SUPER_POWER_MERGE_HERO);
-        predictionController.classifier(florest, dataset, PredictionClasses.values());    }
+//        LinkedList<J48> florest = predictionController.florest();
+//        Instances dataset = datasetController.getDataset(DatasetId.SUPER_POWER_MERGE_HERO);
+//        predictionController.classifier(florest, dataset, PredictionClasses.values());    
+    }
 }

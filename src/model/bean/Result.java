@@ -12,7 +12,7 @@ public class Result implements Comparable {
 
     public Result(String characterName, double similarity) {
         this.characterName = characterName;
-        this.strSimilarity = String.format("%.2f", similarity);
+        this.strSimilarity = String.format("%.6f", similarity);
         this.similarity = similarity;
     }
 

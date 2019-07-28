@@ -36,6 +36,7 @@ public class OccurrenceTable {
             case "TT":
                 this.a++;
                 break;
+            default: System.out.println(value);
         }
     }
 

@@ -28,7 +28,7 @@ public class Jaccard implements Algorithm {
     public double calculate(int a, int b, int c, int d) {
         BigDecimal dividend = new BigDecimal(a);
         BigDecimal divisor = new BigDecimal(a + b + c);
-        return dividend.divide(divisor, MathContext.DECIMAL64).doubleValue();
+        return dividend.divide(divisor, MathContext.DECIMAL128).doubleValue();
     }
 
     @Override

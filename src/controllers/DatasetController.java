@@ -43,7 +43,7 @@ public class DatasetController {
     }
 
     public String[] getPossibleCharacterSuggestions() {
-        Instances dataset = getDataset(DatasetId.HEROES);
+        Instances dataset = getDataset(DatasetId.SUPER_POWER_MERGE_HERO);
         Enumeration<Object> values = dataset.attribute(1).enumerateValues();
         String[] allValues = new String[dataset.attribute(1).numValues()];
         for (int i = 0; values.hasMoreElements(); i++) {

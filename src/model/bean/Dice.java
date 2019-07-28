@@ -28,7 +28,10 @@ public class Dice implements Algorithm {
     public double calculate(int a, int b, int c, int d) {
         BigDecimal dividend = new BigDecimal(2 * a);
         BigDecimal divisor = new BigDecimal((2 * a) + b + c);
-        return dividend.divide(divisor, MathContext.DECIMAL64).doubleValue();
+        return dividend.divide(divisor, MathContext.DECIMAL128
+        
+        
+        ).doubleValue();
     }
 
     @Override

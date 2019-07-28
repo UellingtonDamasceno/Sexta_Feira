@@ -27,12 +27,11 @@ public class SMC implements Algorithm {
     public double calculate(int a, int b, int c, int d) {
         BigDecimal dividend = new BigDecimal(a + d);
         BigDecimal divisor = new BigDecimal(a + b + c + d);
-        return dividend.divide(divisor, MathContext.DECIMAL32).doubleValue();
+        return dividend.divide(divisor, MathContext.DECIMAL128).doubleValue();
     }
 
     @Override
     public double calculate(OccurrenceTable table) {
-        System.out.println(table);
-        return this.calculate(table.getA(), table.getB(), table.getC(), table.getD());
+      return this.calculate(table.getA(), table.getB(), table.getC(), table.getD());
     }
 }

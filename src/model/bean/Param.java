@@ -6,20 +6,22 @@ import java.util.ArrayList;
 public class Param {
 
         private String value;
-        private double minValue;
-        private double maxValue;
+        private int minValue;
+        private int maxValue;
         private double selectedInterval;
-        private double up;
-
+        private int up;
+        private boolean moreValues;
+        
         public Param(String value) {
-            this(value, 0, 0, 0);
+            this(value, 0, 0, 0, false);
         }
 
-        public Param(String value, double minValue, double maxValue, double up) {
+        public Param(String value, int minValue, int maxValue, int up, boolean moreValues) {
             this.value = value;
             this.minValue = minValue;
             this.maxValue = maxValue;
             this.up = up;
+            this.moreValues = moreValues;
         }
 
         public double getUp() {
@@ -27,14 +29,14 @@ public class Param {
         }
 
         public boolean hasMoreParams() {
-            return (minValue + maxValue) != 0;
+            return this.moreValues;
         }
 
-        public double getMinValue() {
+        public int getMinValue() {
             return this.minValue;
         }
 
-        public double getMaxValue() {
+        public int getMaxValue() {
             return this.maxValue;
         }
 
