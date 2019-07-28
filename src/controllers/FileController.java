@@ -2,11 +2,15 @@ package controllers;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import util.Settings.Path;
@@ -72,6 +76,29 @@ public class FileController {
             });
 
         }
+
+    }
+
+    public void writerObject(Path filePath, Serializable object) throws FileNotFoundException, IOException {
+        File arquivoDestino = new File(filePath.getValue());
+        arquivoDestino.createNewFile();
+        ObjectOutputStream saida;
+        saida = new ObjectOutputStream(new FileOutputStream(arquivoDestino));
+        saida.writeObject(object);
+        saida.close();
+    }
+
+    public Object readObject(Path filePath) throws IOException, ClassNotFoundException {
+        File arquivo = new File(filePath.getValue());
+
+        if (arquivo.length() > 0) {
+            ObjectInputStream entrada;
+            entrada = new ObjectInputStream(new FileInputStream(arquivo));
+            Object conteudo = entrada.readObject();
+            entrada.close();
+            return conteudo;
+        }
+        throw new IOException();
 
     }
 

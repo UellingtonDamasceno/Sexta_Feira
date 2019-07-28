@@ -1,10 +1,12 @@
 package util;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Uellington Damasceno
  */
-public class Settings {
+public class Settings implements Serializable{
 
     public enum Algorithms {
         JACCARD_COEFFICIENT,
@@ -12,7 +14,7 @@ public class Settings {
         DICE;
     }
 
-    public enum PredictionClasses {
+    public enum PredictionClasses implements Serializable{
 
         FLIGHT(19),
         SUPER_STRENGTH(28),
@@ -106,8 +108,9 @@ public class Settings {
         HEROES_CSV_PRE_PROCESSED("pre-processed\\heroes.csv"),
         SUPER_POWER_FILE_ARFF("pre-processed\\superpowers.arff"),
         SUPER_POWER_CSV_ORIGINAL("original\\superpoderes.csv"),
-        SUPER_POWER_CSV_PRE_PROCESSED("pre-processed\\superpoderes.csv");
+        SUPER_POWER_CSV_PRE_PROCESSED("pre-processed\\superpoderes.csv"),
 
+        RESULTS_TREES("processed\\results.txt");
         private final String value;
         private final String PATH;
 

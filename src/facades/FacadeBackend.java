@@ -6,13 +6,15 @@ import controllers.DataProcessingController;
 import controllers.DatasetController;
 import controllers.FileController;
 import controllers.SimilarityController;
-//import controllers.PredictionController;
+import controllers.PredictionController;
 import exceptions.ListIsEmpty;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javafx.collections.ObservableList;
 import model.bean.Result;
+import model.bean.ResultsTree;
 import util.Algorithm;
 import util.Settings.Algorithms;
 import util.Settings.DatasetId;
@@ -33,7 +35,7 @@ public class FacadeBackend {
     private final FileController fileController;
     private final SimilarityController simmilarityController;
     private final AlgorithmController algorithmController;
-  //  private final PredictionController predictionController;
+    private final PredictionController predictionController;
     private static FacadeBackend facade;
 
     private FacadeBackend() {
@@ -42,11 +44,11 @@ public class FacadeBackend {
         this.fileController = new FileController();
         this.simmilarityController = new SimilarityController();
         this.algorithmController = new AlgorithmController();
-    //    this.predictionController = new PredictionController();
+        this.predictionController = new PredictionController();
 
     }
 
-    static public synchronized FacadeBackend getInstance(){
+    static public synchronized FacadeBackend getInstance() {
         return (facade == null) ? facade = new FacadeBackend() : facade;
     }
 
@@ -94,11 +96,11 @@ public class FacadeBackend {
     public String[] getPossibleSuperPowerSuggestions() {
         return datasetController.PossibleSuperPowerSuggestions();
     }
-    
-    
-    public void treesTest() throws Exception{
-//        LinkedList<J48> florest = predictionController.florest();
-//        Instances dataset = datasetController.getDataset(DatasetId.SUPER_POWER_MERGE_HERO);
-//        predictionController.classifier(florest, dataset, PredictionClasses.values());    
+
+    public void treesTest() throws Exception {
+        LinkedList<J48> florest = predictionController.florest();
+        Instances dataset = datasetController.getDataset(DatasetId.SUPER_POWER_MERGE_HERO);
+        List<ResultsTree> result = predictionController.classifier(florest, dataset, PredictionClasses.values());
+        fileController.writerObject(Path.RESULTS_TREES, (Serializable) result);
     }
 }

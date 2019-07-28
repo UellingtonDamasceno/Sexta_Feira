@@ -9,23 +9,18 @@ public class Param {
         private int minValue;
         private int maxValue;
         private double selectedInterval;
-        private int up;
+ 
         private boolean moreValues;
         
         public Param(String value) {
-            this(value, 0, 0, 0, false);
+            this(value, 0, 0, false);
         }
 
-        public Param(String value, int minValue, int maxValue, int up, boolean moreValues) {
+        public Param(String value, int minValue, int maxValue, boolean moreValues) {
             this.value = value;
             this.minValue = minValue;
             this.maxValue = maxValue;
-            this.up = up;
             this.moreValues = moreValues;
-        }
-
-        public double getUp() {
-            return this.up;
         }
 
         public boolean hasMoreParams() {
@@ -46,14 +41,6 @@ public class Param {
 
         public void setSelectedInterval(double interval) {
             this.selectedInterval = interval;
-        }
-
-        public ArrayList<String> getAllIntervals() {
-            ArrayList<String> interval = new ArrayList();
-            for (double i = this.minValue; i < this.maxValue; i += this.up) {
-                interval.add(String.valueOf(i));
-            }
-            return interval;
         }
 
         @Override

@@ -1,34 +1,33 @@
 package model.bean;
 
-import util.Settings.PredictionClasses;
-import weka.classifiers.Evaluation;
-import weka.classifiers.trees.J48;
+import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  *
  * @author Gabriela
  */
-public class ResultsTree implements Comparable {
+public class ResultsTree implements Comparable, Serializable {
 
-    private final J48 tree;
-    private final Evaluation evaluation;
-    private final PredictionClasses predictionClasse;
+    private final String[] options;
+    private final double result;
+    private final int predictionClasse;
 
-    public ResultsTree(J48 params, Evaluation evaluation, PredictionClasses predictionClasses) {
-        this.tree = params;
-        this.evaluation = evaluation;
+    public ResultsTree(String[] options, double result, int predictionClasses) {
+        this.options = options;
+        this.result = result;
         this.predictionClasse = predictionClasses;
     }
 
-    public J48 getParams() {
-        return this.tree;
+    public String[] getOptions() {
+        return this.options;
     }
 
     public double getResult() {
-        return this.evaluation.pctCorrect();
+        return this.result;
     }
     
-    public PredictionClasses getPredictionClasses(){
+    public int getPredictionClasses(){
         return this.predictionClasse;
     }
 
@@ -49,6 +48,6 @@ public class ResultsTree implements Comparable {
 
     @Override
     public String toString() {
-        return tree.toString();
+        return Arrays.toString(this.options);
     }
 }
