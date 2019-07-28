@@ -3,6 +3,7 @@ package controllers;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.Random;
+import model.bean.ResultsTree;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
@@ -12,7 +13,7 @@ import weka.core.Instances;
  * @author Uellington Damasceno
  */
 public class PredictionController {
-
+/*
     private final J48 tree;
     private Evaluation evaluation;
     private int predictionClass;
@@ -139,4 +140,5 @@ public class PredictionController {
             }
         }
     }
+*/
 }

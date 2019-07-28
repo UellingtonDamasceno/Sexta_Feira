@@ -22,6 +22,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -29,8 +30,12 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import model.bean.Dice;
+import model.bean.Jaccard;
 import model.bean.Result;
+import model.bean.SMC;
 import org.controlsfx.control.textfield.TextFields;
+import util.Algorithm;
 import util.Settings.Algorithms;
 import weka.core.Instance;
 
@@ -62,6 +67,15 @@ public class DashboardController implements Initializable {
     
     private String[] heroes;
     private String[] superPower;
+    
+    @FXML   private Tooltip tooltipAlgorithm;
+    
+    @FXML   private VBox vbMatch;
+    @FXML   private Label char1;
+    @FXML   private Label onlyCH1;
+    @FXML   private Label matchChs;
+    @FXML   private Label char2;
+    @FXML   private Label onlyCh2;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -76,6 +90,7 @@ public class DashboardController implements Initializable {
         bindTextField();
         textAreaEmpty();
         textCHSelectedEmpty();
+        vbMatch.setVisible(false);
 
         add.setDisable(true);
         calculate.setDisable(true);
@@ -107,7 +122,7 @@ public class DashboardController implements Initializable {
         tableResultado.getSortOrder().setAll(tcSimilarity);
         tableResultado.getItems().setAll(results);
     }
-
+    
     @FXML
     private void calculate(ActionEvent event) {
         textCHSelectedEmpty();
@@ -131,7 +146,7 @@ public class DashboardController implements Initializable {
         textCHSelectedEmpty();
         try {
             character = facadeb.getCharacterByName(txtGetHero.getText());
-            setLabel(character, labelInfos);
+            setLabel(character, labelInfos, char1);
             add.setDisable(false);
         } catch (CharacterNotFoundException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
@@ -163,10 +178,10 @@ public class DashboardController implements Initializable {
         selectedCCha.setVisible(false);
     }
 
-private void setLabel(Instance character, Label label) {
+    private void setLabel(Instance character, Label label, Label name) {
         String[] values = character.toString().split(",");
         String all = "";
-
+        name.setText(values[0]);
         for (int i = 2; i <= 10; i++) {
             if (values[i].equals("-") || values[i].equals("-99")) {
                 values[i] = "Unknown";
@@ -210,6 +225,7 @@ private void setLabel(Instance character, Label label) {
     @SuppressWarnings("empty-statement")
     @FXML
     private void selectACHFromTable(MouseEvent event) {
+        vbMatch.setVisible(false);
         selectedCName.setVisible(false);
         String Ch = tableResultado.getSelectionModel().getSelectedItem().getCharacterName();
 
@@ -218,8 +234,12 @@ private void setLabel(Instance character, Label label) {
                 selectedCName.setText(Ch);
                 selectedCName.setVisible(true);
                 Instance character = facadeb.getCharacterByName(Ch);
-                setLabel(character, selectedCCha);
+                setLabel(character, selectedCCha, char2);
                 selectedCCha.setVisible(true);
+                
+                //Match area
+                vbMatch.setVisible(true);
+                
             } catch (CharacterNotFoundException ex) {
                 facadef.newAlert("CharacterNotFoundException", "Não foi possível encontrar o personagem");
                 textCHSelectedEmpty();
@@ -234,7 +254,22 @@ private void setLabel(Instance character, Label label) {
     private void comboBoxAlgorithmsOnAction(ActionEvent event) {
         if(comboBoxAlgorithms.getValue() != null){
             calculate.setDisable(false);
+            tooltipAlgorithm.setText(getAlgorithmDesc(comboBoxAlgorithms.getValue()));
         }         
+    }
+    
+    private String getAlgorithmDesc(Algorithms al){
+        switch (al) {
+            case DICE: {
+                return new Dice().getDescription();
+            }
+            case JACCARD_COEFFICIENT: {
+                return new Jaccard().getDescription();
+            }
+            default: {
+                return new SMC().getDescription();
+            }
+        }        
     }
 
 }

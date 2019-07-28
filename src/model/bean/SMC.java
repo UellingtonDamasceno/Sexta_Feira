@@ -13,8 +13,8 @@ public class SMC implements Algorithm {
     private final String description;
 
     public SMC() {
-        this.description = "The Simple Matching Coefficient similarity measure "
-                + "is a way to calculate the similarity between two objects that "
+        this.description = "The Simple Matching Coefficient similarity measure\n "
+                + "is a way to calculate the similarity between two objects that\n "
                 + "have binary attributes. This algorithm includes negative matches.";
     }
 

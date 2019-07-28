@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -22,7 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="630.0" prefWidth="986.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController">
+<AnchorPane id="AnchorPane" prefHeight="630.0" prefWidth="1034.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController">
    <children>
       <Separator layoutX="352.0" orientation="VERTICAL" prefHeight="609.0" prefWidth="8.0" AnchorPane.leftAnchor="350.0" />
       <Separator layoutX="682.0" orientation="VERTICAL" prefHeight="609.0" prefWidth="0.0" AnchorPane.leftAnchor="700.0" />
@@ -37,7 +38,7 @@
             <VBox fx:id="vboxContent" alignment="TOP_CENTER" disable="true" prefHeight="192.0" prefWidth="318.0" />
          </content>
       </ScrollPane>
-      <ComboBox fx:id="comboBoxAlgorithms" layoutX="14.0" layoutY="498.0" onAction="#comboBoxAlgorithmsOnAction" prefHeight="29.0" prefWidth="320.0" promptText="MEDIDA DE ANÁLISE" />
+      <ComboBox fx:id="comboBoxAlgorithms" layoutX="14.0" layoutY="498.0" onAction="#comboBoxAlgorithmsOnAction" prefHeight="29.0" prefWidth="291.0" promptText="MEDIDA DE ANÁLISE" />
       <Slider fx:id="slider" layoutX="14.0" layoutY="567.0" majorTickUnit="1.0" max="700.0" min="1.0" minorTickCount="1" prefHeight="14.0" prefWidth="320.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
       <Label layoutX="14.0" layoutY="4.0" text="Buscar um personagem:">
          <font>
@@ -54,10 +55,10 @@
             <Insets />
          </opaqueInsets>
       </HBox>
-      <Button fx:id="calculate" layoutX="14.0" layoutY="604.0" mnemonicParsing="false" onAction="#calculate" prefHeight="25.0" prefWidth="320.0" text="CALCULAR" />
+      <Button fx:id="calculate" layoutX="14.0" layoutY="598.0" mnemonicParsing="false" onAction="#calculate" prefHeight="25.0" prefWidth="320.0" text="CALCULAR" />
       <HBox alignment="CENTER" layoutX="14.0" layoutY="531.0" prefHeight="26.0" prefWidth="320.0">
          <children>
-            <Label prefHeight="17.0" prefWidth="204.0" text="QUANTIDADE DE RESULTADOS:" />
+            <Label prefHeight="17.0" prefWidth="203.0" text="QUANTIDADE DE RESULTADOS:" />
             <TextField fx:id="txtResultsNumber" prefHeight="25.0" prefWidth="60.0" text="1" />
          </children>
       </HBox>
@@ -69,14 +70,85 @@
          </children>
       </HBox>
       <Label fx:id="labelInfos" layoutX="14.0" layoutY="59.0" text="Label" />
-      <VBox layoutX="726.0" layoutY="24.0" prefHeight="200.0" prefWidth="238.0">
+      <Label alignment="CENTER" layoutX="314.0" layoutY="502.0" prefHeight="17.0" prefWidth="20.0" style="-fx-border-radius: 10; -fx-border-color: #616161;" text="?" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <tooltip>
+            <Tooltip fx:id="tooltipAlgorithm" text="Empty Tooltip" />
+         </tooltip>
+      </Label>
+      <VBox layoutX="715.0" layoutY="14.0" prefHeight="609.0" prefWidth="306.0">
          <children>
-            <Label fx:id="selectedCName" alignment="CENTER" prefHeight="17.0" prefWidth="304.0" text="Label">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="selectedCCha" text="Label" />
+            <VBox prefHeight="146.0" prefWidth="306.0">
+               <children>
+                  <Label fx:id="selectedCName" alignment="CENTER" prefHeight="17.0" prefWidth="304.0" text="Label">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="selectedCCha" text="Label" />
+               </children>
+            </VBox>
+            <Separator prefHeight="13.0" prefWidth="306.0" />
+            <VBox fx:id="vbMatch" prefHeight="454.0" prefWidth="306.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="306.0" style="-fx-background-color: #bababa; -fx-background-radius: 10;" text="Was it a MATCH??">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Separator prefHeight="10.0" prefWidth="306.0" />
+                  <VBox prefHeight="108.0" prefWidth="306.0" style="-fx-background-color: #e8e8e8; -fx-background-radius: 20;">
+                     <children>
+                        <Label fx:id="char1" alignment="CENTER" prefHeight="17.0" prefWidth="305.0" text="Label" />
+                        <ScrollPane prefHeight="73.0" prefWidth="306.0">
+                           <content>
+                              <Pane prefHeight="59.0" prefWidth="277.0">
+                                 <children>
+                                    <Label fx:id="onlyCH1" layoutX="30.0" layoutY="6.0" text="Label" />
+                                 </children>
+                              </Pane>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+                  <Separator prefHeight="5.0" prefWidth="306.0" />
+                  <VBox prefHeight="180.0" prefWidth="306.0" style="-fx-background-color: #e8e8e8; -fx-background-radius: 20;">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="308.0" text="&gt;&gt;&gt;&gt;MATCH&lt;&lt;&lt;&lt;">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane prefHeight="142.0" prefWidth="295.0">
+                           <content>
+                              <Pane prefHeight="137.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="matchChs" layoutX="30.0" layoutY="14.0" text="Label" />
+                                 </children>
+                              </Pane>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+                  <Separator prefHeight="5.0" prefWidth="306.0" />
+                  <VBox prefHeight="121.0" prefWidth="306.0" style="-fx-background-color: #e8e8e8; -fx-background-radius: 20;">
+                     <children>
+                        <Label fx:id="char2" alignment="CENTER" prefHeight="17.0" prefWidth="307.0" text="Label" />
+                        <ScrollPane prefHeight="84.0" prefWidth="306.0">
+                           <content>
+                              <Pane prefHeight="81.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="onlyCh2" layoutX="31.0" layoutY="14.0" text="Label" />
+                                 </children>
+                              </Pane>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
          </children>
       </VBox>
    </children>

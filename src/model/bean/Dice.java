@@ -13,8 +13,8 @@ public class Dice implements Algorithm {
     private final String description;
 
     public Dice() {
-        this.description = "The Dice similarity measure is a way to calculate "
-                + "the similarity between two objects that have binary attributes."
+        this.description = "The Dice similarity measure is a way to calculate\n "
+                + "the similarity between two objects that have binary attributes.\n"
                 + "This algorithm adds weight to the positive matches and does "
                 + "not include negative matches.";
     }
