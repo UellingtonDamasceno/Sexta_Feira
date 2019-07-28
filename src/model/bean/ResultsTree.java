@@ -1,7 +1,8 @@
 package model.bean;
 
-import controllers.PredictionController.Param;
-import java.util.List;
+import util.Settings.PredictionClasses;
+import weka.classifiers.Evaluation;
+import weka.classifiers.trees.J48;
 
 /**
  *
@@ -9,20 +10,26 @@ import java.util.List;
  */
 public class ResultsTree implements Comparable {
 
-    private List<Param> params;
-    private double result;
+    private final J48 tree;
+    private final Evaluation evaluation;
+    private final PredictionClasses predictionClasse;
 
-    public ResultsTree(List<Param> params, double result) {
-        this.params = params;
-        this.result = result;
+    public ResultsTree(J48 params, Evaluation evaluation, PredictionClasses predictionClasses) {
+        this.tree = params;
+        this.evaluation = evaluation;
+        this.predictionClasse = predictionClasses;
     }
 
-    public List<Param> getParams() {
-        return this.params;
+    public J48 getParams() {
+        return this.tree;
     }
 
     public double getResult() {
-        return this.result;
+        return this.evaluation.pctCorrect();
+    }
+    
+    public PredictionClasses getPredictionClasses(){
+        return this.predictionClasse;
     }
 
     @Override
@@ -42,6 +49,6 @@ public class ResultsTree implements Comparable {
 
     @Override
     public String toString() {
-        return params.toString();
+        return tree.toString();
     }
 }

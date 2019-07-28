@@ -9,6 +9,7 @@ import controllers.SimilarityController;
 import controllers.PredictionController;
 import exceptions.ListIsEmpty;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import javafx.collections.ObservableList;
 import model.bean.Result;
@@ -18,6 +19,7 @@ import util.Settings.Algorithms;
 import util.Settings.DatasetId;
 import util.Settings.Path;
 import util.Settings.PredictionClasses;
+import weka.classifiers.trees.J48;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -55,25 +57,19 @@ public class FacadeBackend {
 
         List<String[]> heroFilePreProcessed = dataProcessingController.standardizeValues(contentHeroFile, DatasetId.HEROES);
         List<String[]> superPowerFilePreProcessed = dataProcessingController.standardizeValues(contentSuperPowerFile, DatasetId.SUPER_POWER);
-        //List<String[]> datasetMerge = dataProcessingController.merge(heroFilePreProcessed, superPowerFilePreProcessed);
+        List<String[]> datasetMerge = dataProcessingController.merge(heroFilePreProcessed, superPowerFilePreProcessed);
 
         fileController.witerCSV(Path.HEROES_CSV_PRE_PROCESSED, heroFilePreProcessed);
         fileController.witerCSV(Path.SUPER_POWER_CSV_PRE_PROCESSED, superPowerFilePreProcessed);
-        //fileController.witerCSV(Path.DATASET_FILE_CSV, datasetMerge);
+        fileController.witerCSV(Path.DATASET_FILE_CSV, datasetMerge);
 
         Instances heroesFileArff = fileController.convertCSVToArff(Path.HEROES_CSV_PRE_PROCESSED, Path.HEROES_FILE_ARFF);
         Instances superPowerFileArff = fileController.convertCSVToArff(Path.SUPER_POWER_CSV_PRE_PROCESSED, Path.SUPER_POWER_FILE_ARFF);
-        //Instances superPowerMergeHero = fileController.convertCSVToArff(Path.DATASET_FILE_CSV, Path.DATASET_FILE_ARFF);
+        Instances superPowerMergeHero = fileController.convertCSVToArff(Path.DATASET_FILE_CSV, Path.DATASET_FILE_ARFF);
 
         datasetController.addDataset(DatasetId.HEROES, heroesFileArff);
         datasetController.addDataset(DatasetId.SUPER_POWER, superPowerFileArff);
-        //datasetController.addDataset(DatasetId.SUPER_POWER_MERGE_HERO, superPowerMergeHero);
-
-//        predictionController.createTree(superPowerMergeHero, PredictionClasses.FLIGHT.getValue());
-//        predictionController.createTree(superPowerMergeHero, PredictionClasses.SUPER_STRENGTH.getValue());
-//        predictionController.createTree(superPowerMergeHero, PredictionClasses.ACCELERATED_HEALING.getValue());
-//        predictionController.createTree(superPowerMergeHero, PredictionClasses.ALIGNMENT.getValue());
-//        predictionController.createTree(superPowerMergeHero, PredictionClasses.INVISIBILITY.getValue());
+        datasetController.addDataset(DatasetId.SUPER_POWER_MERGE_HERO, superPowerMergeHero);
 
     }
 
@@ -99,5 +95,10 @@ public class FacadeBackend {
     public String[] getPossibleSuperPowerSuggestions() {
         return datasetController.PossibleSuperPowerSuggestions();
     }
-
+    
+    
+    public void treesTest() throws Exception{
+        LinkedList<J48> florest = predictionController.florest();
+        Instances dataset = datasetController.getDataset(DatasetId.SUPER_POWER_MERGE_HERO);
+        predictionController.classifier(florest, dataset, PredictionClasses.values());    }
 }
