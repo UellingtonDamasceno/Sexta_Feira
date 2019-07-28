@@ -80,11 +80,11 @@
                         <Label fx:id="char1" alignment="CENTER" prefHeight="17.0" prefWidth="305.0" text="Label" />
                         <ScrollPane prefHeight="65.0" prefWidth="306.0">
                            <content>
-                              <Pane prefHeight="59.0" prefWidth="277.0">
+                              <VBox prefHeight="63.0" prefWidth="303.0">
                                  <children>
-                                    <Label fx:id="onlyCH1" layoutX="30.0" layoutY="6.0" text="Label" />
+                                    <Label fx:id="onlyCH1" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="306.0" text="Label" />
                                  </children>
-                              </Pane>
+                              </VBox>
                            </content>
                         </ScrollPane>
                      </children>
@@ -99,11 +99,11 @@
                         </Label>
                         <ScrollPane prefHeight="137.0" prefWidth="306.0">
                            <content>
-                              <Pane prefHeight="120.0" prefWidth="200.0">
+                              <VBox prefHeight="128.0" prefWidth="304.0">
                                  <children>
-                                    <Label fx:id="matchChs" layoutX="30.0" layoutY="14.0" text="Label" />
+                                    <Label fx:id="matchChs" alignment="CENTER" prefHeight="17.0" prefWidth="305.0" text="Label" />
                                  </children>
-                              </Pane>
+                              </VBox>
                            </content>
                         </ScrollPane>
                      </children>
@@ -114,11 +114,11 @@
                         <Label fx:id="char2" alignment="CENTER" prefHeight="17.0" prefWidth="307.0" text="Label" />
                         <ScrollPane prefHeight="78.0" prefWidth="306.0">
                            <content>
-                              <Pane prefHeight="65.0" prefWidth="200.0">
+                              <VBox prefHeight="71.0" prefWidth="304.0">
                                  <children>
-                                    <Label fx:id="onlyCh2" layoutX="31.0" layoutY="14.0" text="Label" />
+                                    <Label fx:id="onlyCh2" alignment="CENTER" prefHeight="17.0" prefWidth="304.0" text="Label" />
                                  </children>
-                              </Pane>
+                              </VBox>
                            </content>
                         </ScrollPane>
                      </children>

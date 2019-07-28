@@ -274,16 +274,45 @@ public class DashboardController implements Initializable {
                 selectedCCha.setVisible(true);
                 
                 //Match area
-                vbMatch.setVisible(true);
-                
+                setMatchArea(Ch);
             } catch (CharacterNotFoundException ex) {
-                facadef.newAlert("CharacterNotFoundException", "Não foi possível encontrar o personagem");
+                facadef.newAlert("CharacterNotFoundException", "NÃ£o foi possÃ­vel encontrar o personagem");
                 textCHSelectedEmpty();
             } catch(NullPointerException ex){
                 facadef.newAlert("Null", "Nothig selected");
                 textCHSelectedEmpty();
             }
         }
+    }
+    
+    private void setMatchArea(String str){
+        vbMatch.setVisible(true);
+        onlyCH1.setText("");
+        onlyCh2.setText("");
+        matchChs.setText("");   
+        try {
+            String oc1 = "";
+            String oc2 = "";
+            String m = "";
+            Instance a = facadeb.getCharacterByName(char1.getText());
+            Instance b = facadeb.getCharacterByName(char2.getText());
+            String[] splitCh1 = a.toString().split(",");
+            String[] splitCh2 = b.toString().split(",");
+            for (int i = 11; i < splitCh1.length; i++) {
+                if(splitCh1[i].equals("True") && splitCh2[i].equals("True")){
+                    m += superPower[i-10] + "\n";
+                }
+                if(splitCh1[i].equals("True") && splitCh2[i].equals("False")){
+                    oc1 += superPower[i-10] + "\n";
+                }
+                if(splitCh1[i].equals("False") && splitCh2[i].equals("True")){
+                    oc2 += superPower[i-10] + "\n";
+                }                
+            }
+            onlyCH1.setText(oc1);
+            onlyCh2.setText(oc2);
+            matchChs.setText(m);               
+        } catch (CharacterNotFoundException ex) { }
     }
 
     @FXML
