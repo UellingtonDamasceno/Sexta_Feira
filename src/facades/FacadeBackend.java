@@ -9,18 +9,14 @@ import controllers.SimilarityController;
 import controllers.PredictionController;
 import exceptions.ListIsEmpty;
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
 import javafx.collections.ObservableList;
 import model.bean.Result;
-import model.bean.ResultsTree;
 import util.Algorithm;
 import util.Settings.Algorithms;
 import util.Settings.DatasetId;
 import util.Settings.Path;
 import util.Settings.PredictionClasses;
-import weka.classifiers.trees.J48;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -72,6 +68,11 @@ public class FacadeBackend {
         datasetController.addDataset(DatasetId.SUPER_POWER, superPowerFileArff);
         datasetController.addDataset(DatasetId.SUPER_POWER_MERGE_HERO, superPowerMergeHero);
 
+        prediction(PredictionClasses.ACCELERATED_HEALING);
+        prediction(PredictionClasses.ALIGNMENT);
+        prediction(PredictionClasses.FLIGHT);
+        prediction(PredictionClasses.INVISIBILITY);
+        prediction(PredictionClasses.SUPER_STRENGTH);
     }
 
     public List<Result> calculateDistances(String name, Algorithms algorithmType) throws IOException, CharacterNotFoundException {
@@ -97,10 +98,13 @@ public class FacadeBackend {
         return datasetController.PossibleSuperPowerSuggestions();
     }
 
-    public void treesTest() throws Exception {
-        LinkedList<J48> florest = predictionController.florest();
-        Instances dataset = datasetController.getDataset(DatasetId.SUPER_POWER_MERGE_HERO);
-        List<ResultsTree> result = predictionController.classifier(florest, dataset, PredictionClasses.values());
-        fileController.writerObject(Path.RESULTS_TREES, (Serializable) result);
+    public void prediction(PredictionClasses predictionClass) throws Exception {
+        predictionController.prediction(datasetController.getDataset(DatasetId.SUPER_POWER_MERGE_HERO), predictionClass.getValue());
+        predictionController.prediction(datasetController.getDataset(DatasetId.SUPER_POWER_MERGE_HERO), predictionClass.getValue());
+        predictionController.prediction(datasetController.getDataset(DatasetId.SUPER_POWER_MERGE_HERO), predictionClass.getValue());
+        predictionController.prediction(datasetController.getDataset(DatasetId.SUPER_POWER_MERGE_HERO), predictionClass.getValue());
+        predictionController.prediction(datasetController.getDataset(DatasetId.SUPER_POWER_MERGE_HERO), predictionClass.getValue());
+        System.out.println(predictionController.toString());
     }
+
 }
