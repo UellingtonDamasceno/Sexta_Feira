@@ -1,8 +1,8 @@
 package facades;
 
-import controllers.ControllerScreens;
-import controllers.ControllerStage;
-import controllers.DashboardController;
+import controllers.frontend.ControllerScreens;
+import controllers.frontend.ControllerStage;
+import controllers.frontend.DashboardController;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import util.Settings.Scenes;

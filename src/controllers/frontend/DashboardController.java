@@ -1,4 +1,4 @@
-package controllers;
+package controllers.frontend;
 
 import exceptions.CharacterNotFoundException;
 import facades.FacadeBackend;

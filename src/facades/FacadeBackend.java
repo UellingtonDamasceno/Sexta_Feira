@@ -1,12 +1,12 @@
 package facades;
 
-import controllers.AlgorithmController;
+import controllers.backend.AlgorithmController;
 import exceptions.CharacterNotFoundException;
-import controllers.DataProcessingController;
-import controllers.DatasetController;
-import controllers.FileController;
-import controllers.SimilarityController;
-import controllers.PredictionController;
+import controllers.backend.DataProcessingController;
+import controllers.backend.DatasetController;
+import controllers.backend.FileController;
+import controllers.backend.SimilarityController;
+import controllers.backend.PredictionController;
 import exceptions.ListIsEmpty;
 import java.io.IOException;
 import java.io.Serializable;

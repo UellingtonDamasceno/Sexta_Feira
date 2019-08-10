@@ -1,4 +1,4 @@
-package controllers;
+package controllers.backend;
 
 import exceptions.CharacterNotFoundException;
 import java.util.ArrayList;
