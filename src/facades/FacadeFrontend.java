@@ -11,21 +11,21 @@ import util.Settings.Scenes;
  *
  * @author Uellington Damasceno
  */
-public class FacadeFrontEnd {
+public class FacadeFrontend {
 
-    private static FacadeFrontEnd facade;
+    private static FacadeFrontend facade;
 
     private ControllerStage controllerStage;
     private final ControllerScreens controllerScreens;
     private DashboardController dashboardController;
    
     
-    private FacadeFrontEnd() {
+    private FacadeFrontend() {
         controllerScreens = new ControllerScreens();
     }
 
-    public static synchronized FacadeFrontEnd getInstance() {
-        return (facade == null) ? facade = new FacadeFrontEnd() : facade;
+    public static synchronized FacadeFrontend getInstance() {
+        return (facade == null) ? facade = new FacadeFrontend() : facade;
     }
 
     public void initialize(Stage mainStage, Scenes homeScreen) throws Exception {

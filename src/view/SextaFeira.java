@@ -1,10 +1,14 @@
 package view;
 
+import exceptions.ListIsEmpty;
 import facades.FacadeBackend;
-import facades.FacadeFrontEnd;
+import facades.FacadeFrontend;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import util.Settings.Scenes;
 
@@ -16,15 +20,39 @@ public class SextaFeira extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        FacadeBackend facadeBackend = FacadeBackend.getInstance();
+        FacadeFrontend facadeFrontend = FacadeFrontend.getInstance();
 
         try {
-            FacadeBackend.getInstance().initialize();
-            FacadeFrontEnd.getInstance().initialize(primaryStage, Scenes.DASHBOARD);
-            FacadeBackend.getInstance().treesTest();
+            if (!facadeBackend.hasAlreadyBeenInitialized() || !facadeBackend.wasSuccessfullyClosed()) {
+                facadeBackend.firstBoot();
+                System.out.println("first boot");
+            } else {
+                System.out.println("boot");
+                facadeBackend.boot();
+            }
+            facadeFrontend.initialize(primaryStage, Scenes.DASHBOARD);
+        } catch (IOException e) {
+            Logger.getLogger(SextaFeira.class.getName()).log(Level.SEVERE, null, e);
+        } catch (ListIsEmpty e) {
+            Logger.getLogger(SextaFeira.class.getName()).log(Level.SEVERE, null, e);
         } catch (Exception ex) {
             Logger.getLogger(SextaFeira.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(0);
         }
+
+        primaryStage.setOnCloseRequest(
+                new EventHandler() {
+            @Override
+            public void handle(Event event
+            ) {
+                try {
+                    facadeBackend.finalize();
+                } catch (IOException ex) {
+                    //tratar se possivel
+                }
+            }
+        }
+        );
     }
 
     /**

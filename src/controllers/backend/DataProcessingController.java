@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import util.Settings.FileSettings;
-import util.Settings.DatasetId;
+import util.Settings.Dataset;
 import util.Settings.StandardValues;
 
 /**
@@ -13,33 +13,20 @@ import util.Settings.StandardValues;
  */
 public class DataProcessingController {
 
-    public List<String[]> standardizeValues(List<String> contentFile, DatasetId fileType) {
-        List<String[]> contentFilePreProcessed = replaceEmpatyValues(contentFile);
-        StandardValues standardNumber;
-
-        if (fileType == DatasetId.HEROES) {
-            contentFilePreProcessed = standardizeValuesHeroFile(contentFilePreProcessed);
-            standardNumber = StandardValues.NUMBER_ATTRIBUTE_HERO;
-        } else {
-            //contentFilePreProcessed = replaceBinariesValues(contentFilePreProcessed);
-            standardNumber = StandardValues.NUMBER_ATTRIBUTE_SUPER_POWER;
-        }
-
-        return standardization(contentFilePreProcessed, standardNumber);
-    }
-
-    private List<String[]> replaceBinariesValues(List<String[]> contentFile) {
-
-        contentFile.forEach((String[] line) -> {
-            for (int i = 0; i < line.length; i++) {
-                line[i] = (line[i].equalsIgnoreCase("true"))
-                        ? FileSettings.TRUE.getValue()
-                        : (line[i].equalsIgnoreCase("false"))
-                        ? FileSettings.FALSE.getValue()
-                        : line[i];
+    public List<String[]> standardize(List<String> contentFile, Dataset fileType, StandardValues value) {
+        List<String[]> contentFilePreProcessed;
+        if (fileType == Dataset.HEROES) {
+            contentFilePreProcessed = replaceEmpatyValues(contentFile);
+            if (contentFilePreProcessed.get(0)[0].trim().isEmpty()) {
+                contentFilePreProcessed.get(0)[0] = "index";
             }
-        });
-        return contentFile;
+        }else{
+            contentFilePreProcessed = new LinkedList();
+            contentFile.forEach((string) -> {
+                contentFilePreProcessed.add(string.split(FileSettings.CSV_DIVISOR.getValue()));
+            });
+        }
+        return standardization(contentFilePreProcessed, value);
     }
 
     public List<String[]> merge(List<String[]> datasetA, List<String[]> datasetB) {
@@ -65,12 +52,16 @@ public class DataProcessingController {
         });
         return result;
     }
-   
+
     private List<String[]> replaceEmpatyValues(List<String> content) {
         List<String[]> preProcessedContent = new LinkedList();
-        content.stream().map((string) -> string.replace(FileSettings.EMPATY.getValue(), ",-,")).forEachOrdered((string) -> {
-            preProcessedContent.add(string.split(FileSettings.CSV_DIVISOR.getValue()));
-        });
+        content.stream().map(
+                (string) -> string.replace(FileSettings.EMPATY.getValue(), ",-,")
+        ).forEachOrdered(
+                (string) -> {
+                    preProcessedContent.add(string.split(FileSettings.CSV_DIVISOR.getValue()));
+                }
+        );
         return preProcessedContent;
     }
 
@@ -94,12 +85,4 @@ public class DataProcessingController {
         linesToRemove.forEach(contentFile::remove);
         return contentFile;
     }
-
-    private List<String[]> standardizeValuesHeroFile(List<String[]> contentFile) {
-        if (contentFile.get(0)[0].trim().isEmpty()) {
-            contentFile.get(0)[0] = "index";
-        }
-        return contentFile;
-    }
-
 }

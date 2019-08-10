@@ -6,15 +6,15 @@ import java.io.Serializable;
  *
  * @author Uellington Damasceno
  */
-public class Settings implements Serializable{
-
-    public enum Algorithms {
+public class Settings implements Serializable {
+    
+    public enum Algorithms implements Serializable {
         JACCARD_COEFFICIENT,
         SMC,
         DICE;
     }
 
-    public enum PredictionClasses implements Serializable{
+    public enum PredictionClasses implements Serializable {
 
         FLIGHT(19),
         SUPER_STRENGTH(28),
@@ -33,7 +33,7 @@ public class Settings implements Serializable{
         }
     }
 
-    public enum Icons {
+    public enum Icons implements Serializable{
 
         IRON_MAN("ironman.png"),
         LIGHTNING_BOLT("lightning_bolt.png"),
@@ -54,7 +54,7 @@ public class Settings implements Serializable{
         }
     }
 
-    public enum StandardValues {
+    public enum StandardValues implements Serializable{
 
         MINIMUM_ALLOWED_VALUE(0),
         NUMBER_ATTRIBUTE_HERO(11),
@@ -71,7 +71,7 @@ public class Settings implements Serializable{
         }
     }
 
-    public enum FileSettings {
+    public enum FileSettings implements Serializable{
 
         FALSE("0"),
         TRUE("1"),
@@ -92,39 +92,36 @@ public class Settings implements Serializable{
         }
     }
 
-    public enum DatasetId {
-
+    public enum Dataset implements Serializable{
         HEROES,
         SUPER_POWER,
         SUPER_POWER_MERGE_HERO;
     }
 
-    public enum Path {
+    public enum Path implements Serializable{
 
-        DATASET_FILE_ARFF("processed\\dataset.arff"),
-        DATASET_FILE_CSV("processed\\dataset.csv"),
-        HEROES_FILE_ARFF("pre-processed\\heroes.arff"),
-        HEROES_CSV_ORIGINAL("original\\herois.csv"),
-        HEROES_CSV_PRE_PROCESSED("pre-processed\\heroes.csv"),
-        SUPER_POWER_FILE_ARFF("pre-processed\\superpowers.arff"),
-        SUPER_POWER_CSV_ORIGINAL("original\\superpoderes.csv"),
-        SUPER_POWER_CSV_PRE_PROCESSED("pre-processed\\superpoderes.csv"),
-
-        RESULTS_TREES("processed\\results.txt");
+        DATASET_FILE_ARFF("res\\dataset\\processed\\dataset.arff"),
+        DATASET_FILE_CSV("res\\dataset\\processed\\dataset.csv"),
+        HEROES_FILE_ARFF("res\\dataset\\pre-processed\\heroes.arff"),
+        HEROES_CSV_ORIGINAL("res\\dataset\\original\\herois.csv"),
+        HEROES_CSV_PRE_PROCESSED("res\\dataset\\pre-processed\\heroes.csv"),
+        SETTINGS_FILE("res\\settings.txt"),
+        SUPER_POWER_FILE_ARFF("res\\dataset\\pre-processed\\superpowers.arff"),
+        SUPER_POWER_CSV_ORIGINAL("res\\dataset\\original\\superpoderes.csv"),
+        SUPER_POWER_CSV_PRE_PROCESSED("res\\dataset\\pre-processed\\superpoderes.csv");
+        
         private final String value;
-        private final String PATH;
 
         Path(String value) {
             this.value = value;
-            this.PATH = "res\\dataset\\";
         }
 
         public String getValue() {
-            return PATH.concat(value);
+            return value;
         }
     }
 
-    public enum Scenes {
+    public enum Scenes implements Serializable{
 
         DASHBOARD("/view/Dashboard.fxml", true);
 

@@ -1,12 +1,6 @@
 package controllers.backend;
 
-import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
-import model.bean.ResultsTree;
-import util.Settings;
 import util.Settings.PredictionClasses;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
@@ -18,37 +12,43 @@ import weka.core.Instances;
  */
 public class PredictionController {
 
-    private LinkedList<ResultsTree> results;
+    private final J48 tree;
 
-    public List<ResultsTree> classifier(List<J48> florest, Instances instance, PredictionClasses[] predictionClasses) throws Exception {
-        for (Settings.PredictionClasses predictionClass : predictionClasses) {
-            for (J48 currentTree : florest) {
-                results.add(createTree(currentTree, instance, predictionClass));
+    public PredictionController() {
+        this.tree = new J48();
+    }
+
+    public void prediction(Instances instances, PredictionClasses predictionClass) throws Exception {
+        instances.setClassIndex(predictionClass.getValue());
+        tree.setOptions(treeOptions(predictionClass));
+        tree.buildClassifier(instances);
+        
+        Evaluation evaluation = new Evaluation(instances);
+        evaluation.crossValidateModel(tree, instances, 10, new Random(1));
+    }
+
+    private String[] treeOptions(PredictionClasses predictionClass) {
+
+        switch (predictionClass) {
+            case FLIGHT: {
+                return new String[]{"-M", "10"};
+            }
+            case SUPER_STRENGTH: {
+                return new String[]{"-M", "3"};
+            }
+            case ACCELERATED_HEALING: {
+                return new String[]{"-O", "-B", "-M", "9"};
+            }
+            case ALIGNMENT: {
+                return new String[]{"-B", "-A"};
+            }
+            case INVISIBILITY: {
+                return new String[]{"-B", "-A"};
+            }
+            default: {
+                throw new AssertionError(predictionClass.name());
             }
         }
-        System.out.println(results.size());
-        System.out.println("Terminou!!!");
-        return results;
     }
 
-    private ResultsTree createTree(J48 tree, Instances instance, PredictionClasses predictionClass) throws Exception {
-        instance.setClassIndex(predictionClass.getValue());
-
-        tree.buildClassifier(instance);
-        Evaluation evaluation = new Evaluation(instance);
-        evaluation.crossValidateModel(tree, instance, 10, new Random(1));
-        evaluationResults(instance, predictionClass.getValue(), evaluation);
-
-        ResultsTree result = new ResultsTree(tree.getOptions(), evaluation.pctCorrect(), predictionClass.getValue());
-        System.out.println(Arrays.toString(tree.getOptions()));
-        return result;
-    }
-
-    public void evaluationResults(Instances instance, int predictionClass, Evaluation evaluation) {
-        DecimalFormat df = new DecimalFormat("0.0000");
-        System.out.println("\nClasse: " + instance.get(predictionClass).classAttribute().name());
-        System.out.println("Quantidade de amostras classificadas corretamente: " + df.format(evaluation.pctCorrect()) + "%");
-        System.out.println("Quantidade de amostras classificadas incorretamente: " + df.format(evaluation.pctIncorrect()) + "%");
-        System.out.println("Índice Kappa: " + df.format(evaluation.kappa()));
-    }
 }

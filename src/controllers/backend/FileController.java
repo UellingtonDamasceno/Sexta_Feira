@@ -64,28 +64,31 @@ public class FileController {
     }
 
     public void witerCSV(Path filePath, List<String[]> content) throws IOException {
-        try (PrintStream pr = new PrintStream(new FileOutputStream(filePath.getValue()))) {
-            content.forEach((strings) -> {
-                for (int i = 0; i < strings.length; i++) {
-                    if (i < strings.length - 1) {
-                        pr.print(strings[i] + FileSettings.CSV_DIVISOR.getValue());
-                    } else {
-                        pr.println(strings[i]);
+        File file = new File(filePath.getValue());
+        if (!file.exists()) {
+            file.createNewFile();
+        } else {
+            try (PrintStream pr = new PrintStream(new FileOutputStream(file))) {
+                content.forEach((strings) -> {
+                    for (int i = 0; i < strings.length; i++) {
+                        if (i < strings.length - 1) {
+                            pr.print(strings[i] + FileSettings.CSV_DIVISOR.getValue());
+                        } else {
+                            pr.println(strings[i]);
+                        }
                     }
-                }
-            });
-
+                });
+            }
         }
 
     }
 
     public void writerObject(Path filePath, Serializable object) throws FileNotFoundException, IOException {
-        File arquivoDestino = new File(filePath.getValue());
-        arquivoDestino.createNewFile();
-        ObjectOutputStream saida;
-        saida = new ObjectOutputStream(new FileOutputStream(arquivoDestino));
-        saida.writeObject(object);
-        saida.close();
+        File destinityFile = new File(filePath.getValue());
+        destinityFile.createNewFile();
+        ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(destinityFile));
+        output.writeObject(object);
+        output.close();
     }
 
     public Object readObject(Path filePath) throws IOException, ClassNotFoundException {
@@ -111,5 +114,15 @@ public class FileController {
     private Instances loadData(Loader loader, Path filePath) throws IOException {
         loader.setSource(new File(filePath.getValue()));
         return loader.getDataSet();
+    }
+
+    public boolean allFileExist(List<String> allFiles) {
+        boolean exist = true;
+        for (String filePath : allFiles) {
+            if (!(new File(filePath).exists())) {
+                exist = false;
+            }
+        }
+        return exist;
     }
 }

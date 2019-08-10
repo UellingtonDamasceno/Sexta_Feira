@@ -2,7 +2,7 @@ package controllers.frontend;
 
 import exceptions.CharacterNotFoundException;
 import facades.FacadeBackend;
-import facades.FacadeFrontEnd;
+import facades.FacadeFrontend;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -62,7 +62,7 @@ public class DashboardController implements Initializable {
     @FXML    private Label selectedCCha;
 
     private FacadeBackend facadeb;
-    private FacadeFrontEnd facadef;
+    private FacadeFrontend facadef;
     
     private String[] heroes;
     private String[] superPower;
@@ -91,7 +91,7 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.facadeb = FacadeBackend.getInstance();
-        this.facadef = FacadeFrontEnd.getInstance();
+        this.facadef = FacadeFrontend.getInstance();
 
         heroes = facadeb.getPossibleCharacterSuggestions();
         superPower = facadeb.getPossibleSuperPowerSuggestions();
@@ -151,7 +151,7 @@ public class DashboardController implements Initializable {
 
     private void initComboBoxType() {
         ObservableList<String> ol = FXCollections.observableArrayList();
-        ol.addAll("Predição", "similaridade");
+        ol.addAll("Predição", "Similaridade");
         analisysTypeCombB.setItems(ol);
     }
     
