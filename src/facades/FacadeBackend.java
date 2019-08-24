@@ -10,8 +10,6 @@ import controllers.backend.PredictionController;
 import exceptions.ListIsEmpty;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import model.bean.Result;
 import util.Algorithm;
@@ -70,16 +68,17 @@ public class FacadeBackend {
         List<String> contentHFile = fileController.readCSV(Path.HEROES_CSV_ORIGINAL);
         List<String> contentSPFile = fileController.readCSV(Path.SUPER_POWER_CSV_ORIGINAL);
 
-        List<String[]> heroFilePP;
-        List<String[]> superPowerFilePP;
-
-        heroFilePP = dataProcessingController.standardize(contentHFile, Dataset.HEROES, StandardValues.NUMBER_ATTRIBUTE_HERO);
-        superPowerFilePP = dataProcessingController.standardize(contentSPFile, Dataset.SUPER_POWER, StandardValues.NUMBER_ATTRIBUTE_SUPER_POWER);
-
-        List<String[]> datasetMerge = dataProcessingController.merge(heroFilePP, superPowerFilePP);
-        fileController.witerCSV(Path.HEROES_CSV_PRE_PROCESSED, heroFilePP);
-        fileController.witerCSV(Path.SUPER_POWER_CSV_PRE_PROCESSED, superPowerFilePP);
-        fileController.witerCSV(Path.DATASET_FILE_CSV, datasetMerge);
+        List<String[]> heroFPP;
+        List<String[]> superPowerFPP;
+        List<String[]> merge;
+        
+        heroFPP = dataProcessingController.standardize(contentHFile, Dataset.HEROES, StandardValues.NUMBER_ATTRIBUTE_HERO);
+        superPowerFPP = dataProcessingController.standardize(contentSPFile, Dataset.SUPER_POWER, StandardValues.NUMBER_ATTRIBUTE_SUPER_POWER);
+        merge = dataProcessingController.merge(heroFPP, superPowerFPP);
+        
+        fileController.witerCSV(Path.HEROES_CSV_PRE_PROCESSED, heroFPP);
+        fileController.witerCSV(Path.SUPER_POWER_CSV_PRE_PROCESSED, superPowerFPP);
+        fileController.witerCSV(Path.DATASET_FILE_CSV, merge);
 
         Instances heroes = fileController.convertCSVToArff(Path.HEROES_CSV_PRE_PROCESSED, Path.HEROES_FILE_ARFF);
         Instances superPowers = fileController.convertCSVToArff(Path.SUPER_POWER_CSV_PRE_PROCESSED, Path.SUPER_POWER_FILE_ARFF);
@@ -93,12 +92,12 @@ public class FacadeBackend {
     }
 
     public void boot() throws IOException {
-        Instances heroesFileArff = fileController.readFileArff(Path.HEROES_FILE_ARFF);
-        Instances superPowerFileArff = fileController.readFileArff(Path.SUPER_POWER_FILE_ARFF);
+        //Instances heroesFileArff = fileController.readFileArff(Path.HEROES_FILE_ARFF);
+        //Instances superPowerFileArff = fileController.readFileArff(Path.SUPER_POWER_FILE_ARFF);
         Instances superPowerMergeHero = fileController.readFileArff(Path.DATASET_FILE_ARFF);
 
-        datasetController.addDataset(Dataset.HEROES, heroesFileArff);
-        datasetController.addDataset(Dataset.SUPER_POWER, superPowerFileArff);
+       // datasetController.addDataset(Dataset.HEROES, heroesFileArff);
+        //datasetController.addDataset(Dataset.SUPER_POWER, superPowerFileArff);
         datasetController.addDataset(Dataset.SUPER_POWER_MERGE_HERO, superPowerMergeHero);
     }
 
@@ -127,7 +126,7 @@ public class FacadeBackend {
 
     public void prediction(Dataset datasetId, PredictionClasses predictionClass) throws Exception {
         Instances dataset = datasetController.getDataset(datasetId);
-        predictionController.prediction(dataset, predictionClass);
+        predictionController.predictionIBK(dataset);
     }
 
     public void finalize() throws IOException {

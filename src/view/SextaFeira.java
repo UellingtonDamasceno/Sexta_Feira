@@ -10,6 +10,7 @@ import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import util.Settings;
 import util.Settings.Scenes;
 
 /**
@@ -26,10 +27,9 @@ public class SextaFeira extends Application {
         try {
             if (!facadeBackend.hasAlreadyBeenInitialized() || !facadeBackend.wasSuccessfullyClosed()) {
                 facadeBackend.firstBoot();
-                System.out.println("first boot");
             } else {
-                System.out.println("boot");
                 facadeBackend.boot();
+                facadeBackend.prediction(Settings.Dataset.SUPER_POWER_MERGE_HERO, Settings.PredictionClasses.INVISIBILITY);
             }
             facadeFrontend.initialize(primaryStage, Scenes.DASHBOARD);
         } catch (IOException e) {
@@ -40,8 +40,7 @@ public class SextaFeira extends Application {
             Logger.getLogger(SextaFeira.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        primaryStage.setOnCloseRequest(
-                new EventHandler() {
+        primaryStage.setOnCloseRequest(new EventHandler() {
             @Override
             public void handle(Event event
             ) {

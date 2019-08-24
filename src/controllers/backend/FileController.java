@@ -19,7 +19,6 @@ import weka.core.Instances;
 import weka.core.converters.ArffLoader;
 import weka.core.converters.ArffSaver;
 import weka.core.converters.CSVLoader;
-import weka.core.converters.CSVSaver;
 import weka.core.converters.Loader;
 import weka.core.converters.Saver;
 
@@ -29,25 +28,13 @@ import weka.core.converters.Saver;
  */
 public class FileController {
 
-    public Instances readFileCSVWithWeka(Path filePath) throws IOException {
-        return this.loadData(new CSVLoader(), filePath);
-    }
-
     public Instances readFileArff(Path filePath) throws IOException {
         return this.loadData(new ArffLoader(), filePath);
     }
 
-    public void saveDataInArffFormact(Instances data, Path filePath) throws IOException {
-        saveData(new ArffSaver(), data, filePath);
-    }
-
-    public void saveDataInCSVFormact(Instances data, Path filePath) throws IOException {
-        saveData(new CSVSaver(), data, filePath);
-    }
-
     public Instances convertCSVToArff(Path pathOriginal, Path pathDestiny) throws IOException {
-        Instances instances = this.readFileCSVWithWeka(pathOriginal);
-        this.saveDataInArffFormact(instances, pathDestiny);
+        Instances instances = this.loadData(new CSVLoader(), pathOriginal);
+        this.saveData(new ArffSaver(), instances, pathDestiny);
         return instances;
     }
 
@@ -64,27 +51,23 @@ public class FileController {
     }
 
     public void witerCSV(Path filePath, List<String[]> content) throws IOException {
-        File file = new File(filePath.getValue());
-        if (!file.exists()) {
-            file.createNewFile();
-        } else {
-            try (PrintStream pr = new PrintStream(new FileOutputStream(file))) {
-                content.forEach((strings) -> {
-                    for (int i = 0; i < strings.length; i++) {
-                        if (i < strings.length - 1) {
-                            pr.print(strings[i] + FileSettings.CSV_DIVISOR.getValue());
-                        } else {
-                            pr.println(strings[i]);
-                        }
+        File file = createFile(filePath);
+        try (PrintStream pr = new PrintStream(new FileOutputStream(file))) {
+            content.forEach((strings) -> {
+                for (int i = 0; i < strings.length; i++) {
+                    if (i < strings.length - 1) {
+                        pr.print(strings[i] + FileSettings.CSV_DIVISOR.getValue());
+                    } else {
+                        pr.println(strings[i]);
                     }
-                });
-            }
+                }
+            });
         }
 
     }
 
     public void writerObject(Path filePath, Serializable object) throws FileNotFoundException, IOException {
-        File destinityFile = new File(filePath.getValue());
+        File destinityFile = this.createFile(filePath);
         destinityFile.createNewFile();
         ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(destinityFile));
         output.writeObject(object);
@@ -92,17 +75,15 @@ public class FileController {
     }
 
     public Object readObject(Path filePath) throws IOException, ClassNotFoundException {
-        File arquivo = new File(filePath.getValue());
-
-        if (arquivo.length() > 0) {
+        File file = new File(filePath.getValue());
+        if (file.length() > 0) {
             ObjectInputStream entrada;
-            entrada = new ObjectInputStream(new FileInputStream(arquivo));
-            Object conteudo = entrada.readObject();
+            entrada = new ObjectInputStream(new FileInputStream(file));
+            Object content = entrada.readObject();
             entrada.close();
-            return conteudo;
+            return content;
         }
         throw new IOException();
-
     }
 
     private void saveData(Saver saver, Instances data, Path filePath) throws IOException {
@@ -124,5 +105,16 @@ public class FileController {
             }
         }
         return exist;
+    }
+
+    private File createFile(Path fullPath) throws IOException {
+        File file = new File(fullPath.getValue());
+        if (!file.exists()) {
+            int directoryLimit = fullPath.getValue().lastIndexOf("\\");
+            File directory = new File(fullPath.getValue().substring(0, directoryLimit));
+            directory.mkdir();
+            file.createNewFile();
+        }
+        return file;
     }
 }

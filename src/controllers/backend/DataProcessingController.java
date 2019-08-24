@@ -76,7 +76,10 @@ public class DataProcessingController {
                         line[i] = FileSettings.STANDARD_CHARACTER.getValue();
                     } else if (line[i].contains(FileSettings.INVALID_CHARACTER.getValue())) {
                         line[i] = line[i].replace(FileSettings.INVALID_CHARACTER.getValue(), FileSettings.STANDARD_CHARACTER.getValue());
-                    } else {
+                    } else if(line[i].contains(FileSettings.NINE_NINE.getValue())){
+                        linesToRemove.add(line);
+                    } 
+                    else {
                         line[i] = line[i].trim();
                     }
                 }

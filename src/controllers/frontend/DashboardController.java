@@ -361,7 +361,7 @@ public class DashboardController implements Initializable {
                 disableBtnCalculate();
                 setPredictionOn();
                 break;
-            case "similaridade":
+            case "Similaridade":
                 disableBtnCalculate();
                 setSimilarityOn();
                 break;

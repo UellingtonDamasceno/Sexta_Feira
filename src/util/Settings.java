@@ -77,9 +77,10 @@ public class Settings implements Serializable {
         TRUE("1"),
         CSV_DIVISOR(","),
         EMPATY(",,"),
+        NINE_NINE("-99"),
         INVALID_CHARACTER("'"),
         NOT_A_NUMBER("NaN"),
-        STANDARD_CHARACTER("-");
+        STANDARD_CHARACTER("unknown");
 
         private final String value;
 
